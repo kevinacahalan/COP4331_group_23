@@ -1,0 +1,24 @@
+Useful database info:
+
+- Password for root is BobTh3Builder
+
+- We have two tables, Users and Coontacts
+
+- Data Fields for Users
+	* FirstName - VARCHAR
+	* LastName - VARCHAR
+	* Login - VARCHAR
+	* Password - VARCHAR
+	* DateCreated, DateLastLoggedIn and ID --> These three are set up to self handle
+
+- Data Fields for Contacts
+	* FirstName - VARCHAR
+	* LastName - VARCHAR
+	* Email - VARCHAR
+	* PhoneNumber - VARCHAR
+	* UserID - INT
+	* ID and DateCreated --> Set up to self handle
+
+- Left User and Password for TheBeast the same as on word doc
+	* Username = TheBeast
+	* Password = WeLoveCOP4331
