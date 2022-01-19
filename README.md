@@ -17,7 +17,7 @@ The open-source operating system used on the remote server
 ### **A**pache
 The open-source Web server used for hosting the remote content
 ### **M**ySql
-The open-source relational database management system (RDBMS) used for processing the data in the database
+The open-source RDBMS<sup>1</sup> used for processing the data in the database
 ### **P**HP
 The open-source, server-sided scripting language used for processing backend computations
 
@@ -55,4 +55,6 @@ API: [Kevin Cahalan](https://github.com/kevinacahalan) and [Kevin Jimenez](https
 Database: [Kelvin Florenciani](https://github.com/Sagerushboy)
 
 ![steve-carell-love-lamp](src/media/gifs/carell-lamp.gif)
+
+<sup>1</sup>: Relational Database Management System
 
