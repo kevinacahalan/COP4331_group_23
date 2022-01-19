@@ -1,6 +1,6 @@
 Useful database info:
 
-- Password for root is BobTh3Builder
+- Password for root is (Pinned in the discord / ask me)
 
 - We have two tables, Users and Coontacts
 
