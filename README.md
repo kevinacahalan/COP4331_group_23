@@ -22,7 +22,7 @@ Created to satisfy the 'Small Project' group assignment for Prof. Rick Leinecker
 
 ## Running instructions
 
-Visit [contact-manager.com](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to log in.
+Visit [Collective Contacts](http://collectivecontacts.xyz) to log in.
 
 Log in and, upon authentication, perform any of the following operations on the user's contact list:
 - Create (add contact),
