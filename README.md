@@ -8,6 +8,19 @@ Full-stack application using HTML, CSS, JS, PHP and mySQL. Application supports 
 
 Created to satisfy the 'Small Project' group assignment for Prof. Rick Leinecker's COP4331 Processes of Object-Oriented Software during the Spring 2022 semester.
 
+## Technical Requirements
+Remote hosting is handled by [Digital Ocean](https://www.digitalocean.com/), where a single 'droplet' (Digital Ocean's smallest server-hosting size) was spun up with a [one-click LAMP stack](https://marketplace.digitalocean.com/apps/lamp).
+
+The LAMP stack is composed of:
+### **L**inux
+The open-source operating system used on the remote server
+### **A**pache
+The open-source Web server used for hosting the remote content
+### **M**ySql
+The open-source relational database management system (RDBMS) used for processing the data in the database
+### **P**HP
+The open-source, server-sided scripting language used for processing backend computations
+
 ## Repository overview
 ```
 ├── README.md
