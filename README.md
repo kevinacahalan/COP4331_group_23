@@ -22,7 +22,7 @@ Created to satisfy the 'Small Project' group assignment for Prof. Rick Leinecker
 
 ## Running instructions
 
-Visit [link here]() to log in.
+Visit [contact-manager.com](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to log in.
 
 Log in and, upon authentication, perform any of the following operations on the user's contact list:
 - Create (add contact),
@@ -33,13 +33,13 @@ Log in and, upon authentication, perform any of the following operations on the 
 
 ## Contributors
 
-Project Manager/Frontend: [Tam Nguyen]()
+Project Manager/Frontend: [Tam Nguyen](https://github.com/)
 
 Frontend: [Justice Smith](https://github.com/jcode94)
 
-API: [Kevin Cahalan](https://github.com/kevinacahalan) and [Kevin Jimenez]()
+API: [Kevin Cahalan](https://github.com/kevinacahalan) and [Kevin Jimenez](https://github.com/KevinJ0226)
 
-Database: [Kelvin Florenciani]()
+Database: [Kelvin Florenciani](https://github.com/Sagerushboy)
 
 ![steve-carell-love-lamp](src/media/gifs/carell-lamp.gif)
 
