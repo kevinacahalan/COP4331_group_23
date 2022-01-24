@@ -46,7 +46,7 @@ Log in and, upon authentication, perform any of the following operations on the 
 
 ## Contributors
 
-Project Manager/Frontend: [Tam Nguyen](https://github.com/)
+Project Manager/Frontend: [Tam Nguyen](https://github.com/kaiyom90)
 
 Frontend: [Justice Smith](https://github.com/jcode94)
 
