@@ -16,9 +16,9 @@ function doLogin() {
 
     document.getElementById("loginResult").innerHTML = "";
 
-    //	let tmp = {login:login,password:password};
-    let tmp = { login: login, password: hash };
-    let jsonPayload = JSON.stringify(tmp);
+    //	let loginCredentials = {login: login, password: password};
+    let loginCredentials = { login: login, password: hash };
+    let jsonPayload = JSON.stringify(loginCredentials);
 
     let url = urlBase + "/Login." + extension;
 
@@ -106,14 +106,14 @@ function addContact() {
 
     document.getElementById("contactAddResult").innerHTML = "";
 
-    let tmp = {
+    let contact = {
         userId: userId,
         first: firstName,
         last: lastName,
         phone: phoneNo,
     };
 
-    let jsonPayload = JSON.stringify(tmp);
+    let jsonPayload = JSON.stringify(contact);
     let url = urlBase + "/AddContact." + extension;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
@@ -132,13 +132,21 @@ function addContact() {
 }
 
 function searchContact() {
-    let name = document.getElementById("searchText").value.split(" ");
+    let firstName = document.getElementById("new-contact-first").value;
+    let lastName = document.getElementById("new-contact-last").value;
+    let phoneNo = document.getElementById("new-contact-phone").value;
     document.getElementById("contactSearchResult").innerHTML = "";
 
     let contactList = "";
 
-    let tmp = { first: name[0], last: name[1], userId: userId };
-    let jsonPayload = JSON.stringify(tmp);
+    let contact = {
+        userId: userId,
+        first: firstName,
+        last: lastName,
+        phone: phoneNo,
+    };
+
+    let jsonPayload = JSON.stringify(contact);
 
     let url = urlBase + "/SearchContacts." + extension;
 
