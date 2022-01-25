@@ -33,6 +33,10 @@ The open-source, server-sided scripting language used for processing backend com
         └── gifs
 ```
 
+## API Documentation
+
+API endpoints are documented at [SwaggerHub](https://app.swaggerhub.com/apis/COP4331_group23/COP4331_group23/1.0.0).
+
 ## Running instructions
 
 Visit [Collective Contacts](http://collectivecontacts.xyz) to log in.
