@@ -1,5 +1,5 @@
-const urlBase = "http://collectivecontacts.xyz";
-const extension = "php";
+const urlBase = "http://collectivecontacts.xyz/";
+const extension = ".php";
 
 let userId = 0;
 let firstName = "";
@@ -20,7 +20,7 @@ function doLogin() {
     let loginCredentials = { login: login, password: hash };
     let jsonPayload = JSON.stringify(loginCredentials);
 
-    let url = urlBase + "/Login." + extension;
+    let url = urlBase + "Login" + extension;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
@@ -49,6 +49,14 @@ function doLogin() {
     } catch (err) {
         document.getElementById("loginResult").innerHTML = err.message;
     }
+}
+
+function doLogout() {
+    userId = 0;
+    firstName = "";
+    lastName = "";
+    document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    window.location.replace("../index.html");
 }
 
 function saveCookie() {
@@ -91,14 +99,6 @@ function readCookie() {
 */
 }
 
-function doLogout() {
-    userId = 0;
-    firstName = "";
-    lastName = "";
-    document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    window.location.replace("../index.html");
-}
-
 function addContact() {
     let firstName = document.getElementById("new-contact-first").value;
     let lastName = document.getElementById("new-contact-last").value;
@@ -114,7 +114,7 @@ function addContact() {
     };
 
     let jsonPayload = JSON.stringify(contact);
-    let url = urlBase + "/AddContact." + extension;
+    let url = urlBase + "AddContact" + extension;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -174,4 +174,12 @@ function searchContact() {
     } catch (err) {
         document.getElementById("contactSearchResult").innerHTML = err.message;
     }
+}
+
+function deleteContact() {
+    
+}
+
+function updateContact() {
+    
 }
