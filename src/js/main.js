@@ -19,6 +19,7 @@ function clearInputError(inputElement) {
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
+    const Pass = document.getElementById("signupPassword");
 
     document.querySelector("#linkCreateAccount").addEventListener("click", e => {
         e.preventDefault();
@@ -40,11 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
         setFormMessage(loginForm, "error", "Invalid username/password combination");
     });
 
+    //Perform error handling of user input field information
     document.querySelectorAll(".form__input").forEach(inputElement => {
         inputElement.addEventListener("blur", e => {
             if (e.target.id === "signupUsername" && e.target.value.length > 0 && e.target.value.length < 10) {
                 setInputError(inputElement, "Username must be at least 10 characters in length");
             }
+
+            else if (e.target.id === "signupPassword" && e.target.value.length > 0 && e.target.value.length < 10) {
+                setInputError(inputElement, "Password must be at least 10 characters in length");
+            }
+
+            else if (e.target.id === "signupConfirmPassword" && Pass.value != e.target.value) {
+                setInputError(inputElement, "Confirm password doesn't match password");
+            }
+
         });
 
         inputElement.addEventListener("input", e => {
