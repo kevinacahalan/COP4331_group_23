@@ -16,6 +16,25 @@ function clearInputError(inputElement) {
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
 }
 
+function checkFormComplete(){
+    var fnameVal = document.getElementById('firstName').value.length;
+    var lnameVal = document.getElementById('lastName').value.length;
+    var unameVal = document.getElementById('signupUsername').value.length;
+    var pnameVal = document.getElementById('signupPassword').value.length;
+    var cpnameVal = document.getElementById('signupConfirmPassword').value.length;
+
+    //If any of the fields are null, return boolean for incomplete TRUE
+     if (fnameVal== "" || lnameVal == "" || unameVal == ""  || pnameVal== "" || cpnameVal==""  ) {
+         //alert("The field needs a value!")
+         return false;
+     }
+     else
+     {
+         return true;
+     }
+
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
@@ -31,6 +50,28 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         loginForm.classList.remove("form--hidden");
         createAccountForm.classList.add("form--hidden");
+    });
+
+    //Controls Create Account Form Button Behavior
+    createAccountForm.addEventListener("submit", e => {
+        e.preventDefault();
+       // loginForm.classList.remove("form--hidden");
+        //createAccountForm.classList.add("form--hidden");
+
+        //Check if all the inputs have been filled, display message depending on it
+        if( checkFormComplete() == true)
+            {
+              setFormMessage(createAccountForm, "success", "Congrats all fields are filled out!");  
+            }
+        
+        
+        else if(checkFormComplete() == false)
+            setFormMessage(createAccountForm, "error", "At least one field is incomplete!");
+        
+        //setFormMessage(createAccountForm, "success", "Congrats this test works!");
+
+       
+
     });
 
     loginForm.addEventListener("submit", e => {
