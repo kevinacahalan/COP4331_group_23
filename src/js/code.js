@@ -74,6 +74,15 @@ function saveCookie() {
         date.toGMTString();
 }
 
+function getID() {
+    const id = document.cookie.split(";")[0].split("=")[1];
+    if (!document.cookie || !id) {
+        return new Error("getID error: invalid cookie");
+    }
+
+    return id;
+}
+
 function readCookie() {
     userId = -1;
     let data = document.cookie;
@@ -93,93 +102,93 @@ function readCookie() {
     if (userId < 0) {
         window.location.replace("../index.html");
     } else {
-        document.getElementById("userName").innerHTML =
-            "Logged in as " + firstName + " " + lastName;
+        document.getElementById("username-display").innerHTML =
+            `${firstName} ${lastName}`;
     }
 */
 }
 
-function addContact() {
-    let firstName = document.getElementById("new-contact-first").value;
-    let lastName = document.getElementById("new-contact-last").value;
-    let phoneNo = document.getElementById("new-contact-phone").value;
-
-    document.getElementById("contactAddResult").innerHTML = "";
-
-    let contact = {
-        userId: userId,
-        first: firstName,
-        last: lastName,
-        phone: phoneNo,
-    };
-
-    let jsonPayload = JSON.stringify(contact);
-    let url = urlBase + "AddContact" + extension;
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try {
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("contactAddResult").innerHTML =
-                    "Contact has been added";
-            }
-        };
-        xhr.send(jsonPayload);
-    } catch (err) {
-        document.getElementById("contactAddResult").innerHTML = err.message;
-    }
+function requestHandler(url = "", formData = {}, rtype = "POST") {
+    fetch(url, {
+        method: rtype,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+        body: formData
+    }).then(function(response) {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    }).catch(e => {
+        document.getElementById('post-result').innerHTML = `${e}`;
+    })
 }
 
 function searchContact() {
-    let firstName = document.getElementById("new-contact-first").value;
-    let lastName = document.getElementById("new-contact-last").value;
-    let phoneNo = document.getElementById("new-contact-phone").value;
-    document.getElementById("contactSearchResult").innerHTML = "";
+    let endpoint = "/SearchContact";
+    let contactList = document.getElementById('contacts-list');
+    
+    let formData = new FormData(document.querySelector('form'));
+    formData.append('uid', getID());
+    
+    let url = `${urlBase}${endpoint}${extension}`;
 
-    let contactList = "";
-
-    let contact = {
-        userId: userId,
-        first: firstName,
-        last: lastName,
-        phone: phoneNo,
-    };
-
-    let jsonPayload = JSON.stringify(contact);
-
-    let url = urlBase + "/SearchContacts." + extension;
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    let result = document.getElementById("post-result");
+    result.innerHTML = "";
     try {
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("contactSearchResult").innerHTML =
-                    "Contact(s) has been retrieved";
-                let jsonObject = JSON.parse(xhr.responseText);
-
-                for (let i = 0; i < jsonObject.results.length; i++) {
-                    contactList += jsonObject.results[i];
-                    if (i < jsonObject.results.length - 1) {
-                        contactList += "<br />\r\n";
-                    }
-                }
-
-                document.getElementById("results").innerHTML = contactList;
-            }
-        };
-        xhr.send(jsonPayload);
-    } catch (err) {
-        document.getElementById("contactSearchResult").innerHTML = err.message;
+        let jsonObj = requestHandler(url, formData);
+        if (jsonObj.length > 0) {
+            jsonObj.forEach(el => contactList.append(buildContact(jsonObj)));
+            result.innerHTML = 'Contact(s) found!';
+        } else {
+            result.innerHTML = 'No contact(s) matching search parameters found!'
+        }
+    } catch (e) {
+        result.innerHTML = e.message;
     }
 }
 
-function deleteContact() {
+// For all DB mutations
+function modifyContacts(endpoint='/AddContact') {
+    let formData = new FormData(document.querySelector('form'));
+    formData.append('uid', getID());
     
+    let url = `${urlBase}${endpoint}${extension}`;
+
+    let result = document.getElementById("post-result");
+    result.innerHTML = "";
+    try {
+        let response = requestHandler(url, formData);
+        result.innerHTML = response;
+    } catch (e) {
+        result.innerHTML = e.message;
+    }
 }
 
-function updateContact() {
+// Builds the elements to display in the contacts output table
+function buildContact(data) {
+    let contact = document.createElement('div');
+    contact.classList.add('flex', 'flex-row', 'gap-x-3');
     
+    const editButton = document.createElement('button');
+    editButton.append('<i class="fas fa-user-edit"></i>');
+    editButton.classList.add('flex', 'items-center');
+    editButton.setAttribute('onclick', modifyContacts('/EditContact'));
+    
+    const deleteButton = document.createElement('button');
+    deleteButton.append('<i class="fas fa-user-times"></i>');
+    deleteButton.classList.add('flex', 'items-center');
+    deleteButton.setAttribute('onclick', modifyContacts('/DeleteContact'))
+   
+    
+    data.forEach(el => {
+        let col = document.createElement('div');
+        col.innerText = el;
+        contact.append(col);
+    });
+    
+    contact.append(editButton, deleteButton);
+    
+    return contact;
 }
