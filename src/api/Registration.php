@@ -24,7 +24,7 @@
 			$stmt->close();
 			$conn->close();
 			
-			returnWithError("Account made");
+			returnWithError(""); // Account made, no error
 		} catch (mysqli_sql_exception $e) {
 			returnWithError("login already in use");
 		}
