@@ -1,4 +1,12 @@
 <?php
+	// This endpoint takes in a json formatted like this:
+	// 	{
+	// 		"firstName": "PLACEHOLDER",
+	// 		"lastName": "PLACEHOLDER",
+	// 		"login": "PLACEHOLDER",
+	// 		"password": "PLACEHOLDER"
+	// 	}
+
 	$inData = getRequestInfo();
 	
 	$FirstName = $inData["firstName"];

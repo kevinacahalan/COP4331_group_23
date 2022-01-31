@@ -1,5 +1,10 @@
-
 <?php
+	// This endpoint takes in a json formatted like this:
+	// 	{
+	// 		"login": "PLACEHOLDER",
+	// 		"password": "PLACEHOLDER"
+	// 	}
+
 
 	$inData = getRequestInfo();
 	
