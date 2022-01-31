@@ -27,7 +27,7 @@
 		}
 		else
 		{
-			$stmt = $conn->prepare("select * from Contacts where UserID=? and FirstName like ? and LastName like ?");
+			$stmt = $conn->prepare("select * from Contacts where UserId=? and FirstName like ? and LastName like ?");
 			$stmt->bind_param("sss", $userId, $firstName, $lastName);
 		}
 		$stmt->execute();
