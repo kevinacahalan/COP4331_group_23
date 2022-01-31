@@ -5,9 +5,13 @@
 	$searchResults = "";
 	$searchCount = 0;
 
-	$userId = $inData["userId"];
-	$firstName = $inData["firstName"];
-	$lastName = $inData["lastName"];
+
+	$Login = $inData["login"];
+	$Password = $inData["password"];
+
+	$search = $inData["search"];
+	$firstName = $search["firstName"];
+	$lastName = $search["lastName"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
@@ -15,7 +19,10 @@
 		returnWithError( $conn->connect_error );
 	} 
 	else
-	{	if(empty($firstName))
+	{	
+		$userId = getUserID($conn, $Login, $Password);
+
+		if(empty($firstName))
 		{
 			$stmt = $conn->prepare("select * from Contacts where UserId=? and LastName like ?");
 			$stmt->bind_param("ss", $userId, $lastName);
@@ -55,6 +62,29 @@
 		
 		$stmt->close();
 		$conn->close();
+	}
+
+	// THIS DAM FUNCTION SHOULD BE MADE GLOBAL OR SOMETHING... AddContact HAS SAME FUNCTION
+	// Grabs userID for login password combination, spits error and quits
+	// if no combination found.
+	function getUserID($conn, $login, $password)
+	{
+		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
+		$stmt->bind_param("ss", $login, $password);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if( $row = $result->fetch_assoc() )
+		{
+			$stmt->close();
+			return $row['ID'];
+		}
+		else
+		{
+			returnWithError("No Records Found");
+			$stmt->close();
+			exit();
+		}
 	}
 
 	function getRequestInfo()
