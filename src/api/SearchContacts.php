@@ -5,17 +5,31 @@
 	$searchResults = "";
 	$searchCount = 0;
 
+	$userId = $inData["userId"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
+
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
 	} 
 	else
-	{
-		$stmt = $conn->prepare("select * from Contacts where UserID=? and (FirstName like ? or LastName like ?)");
-		$firstName = "%" . $inData["firstName"] . "%";
-		$lastName = "%" . $inData["lastName"] . "%";
-		$stmt->bind_param("sss", $inData["userId"], $inData["firstName"], $inData["lastName"]);
+	{	if(empty($firstName))
+		{
+			$stmt = $conn->prepare("select * from Contacts where UserId=? and LastName like ?");
+			$stmt->bind_param("ss", $userId, $lastName);
+		}
+		else if(empty($lastName))
+		{
+			$stmt = $conn->prepare("select * from Contacts where UserId=? and FirstName like ?");
+			$stmt->bind_param("ss", $userId, $firstName);
+		}
+		else
+		{
+			$stmt = $conn->prepare("select * from Contacts where UserID=? and FirstName like ? and LastName like ?");
+			$stmt->bind_param("sss", $userId, $firstName, $lastName);
+		}
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
@@ -27,7 +41,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '"' . $row["ID"] . "," . $row["FirstName"] . "," . $row["LastName"] . "," . $row["Email"] . "," . $row["PhoneNumber"] . '"';
+			$searchResults .= '{"id":' . $row["ID"] . ',"firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","email":"' . $row["Email"] . '","phoneNumber":"' . $row["PhoneNumber"] . '"}';
 		}
 		
 		if( $searchCount == 0 )
