@@ -88,7 +88,9 @@ function doSignUp(){
 
 	var confirmPass = document.getElementById("signupConfirmPassword").value;
 
-    let formData = formData(document.querySelector("#createAccount"));
+    let formData = new FormData(document.querySelector("#createAccount"));
+    //let formData = formData(document.querySelector("#createAccount"));
+    
     formData.delete("Password");
    
     formData.append("Login",login);
