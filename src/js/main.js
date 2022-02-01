@@ -317,11 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.addEventListener("submit", e => {
         e.preventDefault();
 
-        // Perform your AJAX/Fetch login
+       
 
-        //doLogin();
-        validate();
-        //setFormMessage(loginForm, "error", "Invalid username/password combination");
+        doLogin();
+        //validate();
+        
     });
 
     //Perform error handling of user input field information
