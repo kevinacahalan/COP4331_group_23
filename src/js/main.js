@@ -14,8 +14,8 @@ function doLogin() {
     let password = document.getElementById("password").value;
     var hash = md5(password);
     let formData = new FormData();
-    formData.append(login);
-    formData.append(hash);
+    formData.append("Login",login);
+    formData.append("Passowrd",hash);
 
    // document.getElementById("loginResult").innerHTML = "";
    setFormMessage(loginForm, "Success", "");
@@ -30,6 +30,7 @@ function doLogin() {
         // document.getElementById("loginResult").innerHTML =
             //   "User/Password combination incorrect";
          setFormMessage(loginForm, "error", "User/Password combination incorrect");
+         document.getElementById("loginResult").innerHTML = "Incorrect credentials, try again!";
         return;
     }
 
@@ -88,8 +89,10 @@ function doSignUp(){
 	var confirmPass = document.getElementById("signupConfirmPassword").value;
 
     let formData = formData(document.querySelector("#createAccount"));
-    formData.delete("password");
-    formData.append(hash);
+    formData.delete("Password");
+   
+    formData.append("Login",login);
+    formData.append("Password",hash);
 
 	if (password == confirmPass) 
 	{
