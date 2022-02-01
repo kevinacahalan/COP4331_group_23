@@ -1,4 +1,4 @@
-const urlBase = "http://collectivecontacts.xyz/src/api/";
+const urlBase = "https://collectivecontacts.xyz/src/api/";
 const extension = ".php";
 //import { md5 } from './md5.js';
 
