@@ -1,31 +1,45 @@
-const urlBase = "http://collectivecontacts.xyz/";
+const urlBase = "http://collectivecontacts.xyz/src/api/";
 const extension = ".php";
-
+//import { md5 } from './md5.js';
 
 let userId = 0;
 let firstName = "";
 let lastName = "";
 
 function doLogin() {
-    userId = 0;
-    firstName = "";
-    lastName = "";
 
     const loginForm = document.querySelector("#login");
-    
+
     let login = document.getElementById("username").value;
     let password = document.getElementById("password").value;
     var hash = md5(password);
+    let formData = new FormData();
+    formData.append(login);
+    formData.append(hash);
 
    // document.getElementById("loginResult").innerHTML = "";
    setFormMessage(loginForm, "Success", "");
 
-    //	let loginCredentials = {login: login, password: password};
-    let loginCredentials = { login: login, password: hash };
-    let jsonPayload = JSON.stringify(loginCredentials);
 
     let url = urlBase + "Login" + extension;
+    let response =  requestHandler(url, formData);
 
+     userId = response.id;
+
+    if (userId < 1) {
+        // document.getElementById("loginResult").innerHTML =
+            //   "User/Password combination incorrect";
+         setFormMessage(loginForm, "error", "User/Password combination incorrect");
+        return;
+    }
+
+    firstName = response.firstName;
+    lastName = response.lastName;
+
+    saveCookie();
+
+    window.location.replace("../html/contacts.html");
+ /*
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -55,6 +69,71 @@ function doLogin() {
         //.getElementById("loginResult").innerHTML = err.message;
         setFormMessage(loginForm, "error", "Can't log in with credentials!");
     }
+
+    */
+}
+
+function doSignUp(){
+	userId = 0;
+
+	
+	var firstname = document.getElementById("firstName").value;
+	var lastname = document.getElementById("lastName").value;
+	var login = document.getElementById("signupUsername").value;
+
+
+	var password = document.getElementById("signupPassword").value;
+    var hash = md5( password );
+
+	var confirmPass = document.getElementById("signupConfirmPassword").value;
+
+    let formData = formData(document.querySelector("#createAccount"));
+    formData.delete("password");
+    formData.append(hash);
+
+	if (password == confirmPass) 
+	{
+		document.getElementById("loginResult").innerHTML = "";
+
+		// "email": "TestEmail@Test.com",
+  		// "password": "password123",
+  		// "firstname": "Landon",
+  		// "lastname": "Russell",
+  		// "phone": "407-938-4910"
+
+		var json = { login: login, password: hash };
+
+		// translating
+		
+
+		// console.log(jsonPayload);
+		
+		var url = urlBase + 'Signup' + extension;
+
+		// console.log(url);
+        let response = requestHandler(url, formData);
+		
+					userId = response.id;
+
+					// console.log(userId);
+					
+					localStorage.setItem("userIDInput",userId);
+
+					localStorage.getItem("userIDInput");
+			
+					firstName = response.firstName;
+					lastName = response.lastName;
+
+					saveCookie();
+		
+					window.location.href = "../html/contacts.html";
+				
+	}
+
+	else {
+		// make conf pass red
+        document.getElementById("loginResult").innerHTML = "Passwords do not match";
+	}	
 }
 
 function doLogout() {
@@ -149,6 +228,11 @@ function clearInputError(inputElement) {
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
 }
 
+function clearButtonResponseText(){
+    document.getElementById("loginResult_Prime").innerHTML = "";
+    document.getElementById("loginResult").innerHTML = "";
+}
+
 function checkFormComplete(){
     var fnameVal = document.getElementById('firstName').value.length;
     var lnameVal = document.getElementById('lastName').value.length;
@@ -168,52 +252,76 @@ function checkFormComplete(){
 
 }
 
+function validate(){
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    if ( username == "Formget" && password == "formget#123")
+    {
+        alert ("Login successfully");
+        window.location = "../html/contacts.html"; // Redirecting to other page.
+        return false;
+    }}
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
     const Pass = document.getElementById("signupPassword");
 
+    //Create Account Link trigger
     document.querySelector("#linkCreateAccount").addEventListener("click", e => {
         e.preventDefault();
         loginForm.classList.add("form--hidden");
+        clearButtonResponseText();
         createAccountForm.classList.remove("form--hidden");
     });
 
+    //Login Link Trigger
     document.querySelector("#linkLogin").addEventListener("click", e => {
         e.preventDefault();
         loginForm.classList.remove("form--hidden");
+        clearButtonResponseText();
         createAccountForm.classList.add("form--hidden");
     });
 
     //Controls Create Account Form Button Behavior
     createAccountForm.addEventListener("submit", e => {
         e.preventDefault();
+        //doSignUp();
+       //alert ("Register successfully");
        // loginForm.classList.remove("form--hidden");
         //createAccountForm.classList.add("form--hidden");
 
         //Check if all the inputs have been filled, display message depending on it
         if( checkFormComplete() == true)
             {
-              setFormMessage(createAccountForm, "success", "Congrats all fields are filled out!");  
+              setFormMessage(createAccountForm, "success", "Congrats all fields are filled out!"); 
+              //Now Perform the doSignUp(), but check to see if password matches confirm Passowrd
+              doSignUp(); 
             }
         
-        
+        //If form isn't complete, don't allow for registration of new user
         else if(checkFormComplete() == false)
-            setFormMessage(createAccountForm, "error", "At least one field is incomplete!");
+            {
+                 setFormMessage(createAccountForm, "error", "At least one field is incomplete!");
+            }
+           
         
+
         //setFormMessage(createAccountForm, "success", "Congrats this test works!");
 
        
 
     });
 
+    //Check login credentials and send via server using doLogin()
     loginForm.addEventListener("submit", e => {
         e.preventDefault();
 
-        // Perform your AJAX/Fetch login
+       
 
         doLogin();
-        //setFormMessage(loginForm, "error", "Invalid username/password combination");
+        //validate();
+        
     });
 
     //Perform error handling of user input field information
