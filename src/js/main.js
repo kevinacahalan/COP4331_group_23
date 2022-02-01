@@ -6,23 +6,30 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
-function doLogin() {
+async function doLogin() {
 
     const loginForm = document.querySelector("#login");
 
     let login = document.getElementById("username").value;
     let password = document.getElementById("password").value;
     var hash = md5(password);
-    let formData = new FormData();
-    formData.append("Login",login);
-    formData.append("Passowrd",hash);
+
+    let body = {
+        login,
+        password: hash
+    }
 
    // document.getElementById("loginResult").innerHTML = "";
    setFormMessage(loginForm, "Success", "");
 
 
     let url = urlBase + "Login" + extension;
-    let response =  requestHandler(url, formData);
+    let response = await requestHandler(url, body);
+
+    // If response error exists then do something?
+    // if (response.error) {
+
+    // }
 
      userId = response.id;
 
@@ -39,42 +46,10 @@ function doLogin() {
 
     saveCookie();
 
-    window.location.replace("../html/contacts.html");
- /*
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try {
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let jsonObject = JSON.parse(xhr.responseText);
-                userId = jsonObject.id;
-
-                if (userId < 1) {
-                   // document.getElementById("loginResult").innerHTML =
-                     //   "User/Password combination incorrect";
-                     setFormMessage(loginForm, "error", "User/Password combination incorrect");
-                    return;
-                }
-
-                firstName = jsonObject.firstName;
-                lastName = jsonObject.lastName;
-
-                saveCookie();
-
-                window.location.replace("../html/contacts.html");
-            }
-        };
-        xhr.send(jsonPayload);
-    } catch (err) {
-        //.getElementById("loginResult").innerHTML = err.message;
-        setFormMessage(loginForm, "error", "Can't log in with credentials!");
-    }
-
-    */
+    window.location.replace("/src/html/contacts.html");
 }
 
-function doSignUp(){
+async function doSignUp() {
 	userId = 0;
 
 	
@@ -88,16 +63,9 @@ function doSignUp(){
 
 	var confirmPass = document.getElementById("signupConfirmPassword").value;
 
-    let formData = new FormData(document.querySelector("#createAccount"));
     //let formData = formData(document.querySelector("#createAccount"));
-    
-    formData.delete("Password");
-   
-    formData.append("Login",login);
-    formData.append("Password",hash);
 
-	if (password == confirmPass) 
-	{
+	if (password == confirmPass) {
 		document.getElementById("loginResult").innerHTML = "";
 
 		// "email": "TestEmail@Test.com",
@@ -113,25 +81,41 @@ function doSignUp(){
 
 		// console.log(jsonPayload);
 		
-		var url = urlBase + 'Signup' + extension;
+		var url = urlBase + 'Registration' + extension;
+
+        let body = {
+            firstName: firstname,
+            lastName: lastname,
+            password: hash,
+            login
+        }
 
 		// console.log(url);
-        let response = requestHandler(url, formData);
+        let response = await requestHandler(url, body);
+        
+        // TODO: show error for site and stop from auto-redirect
+        if (response.error) {
+            return;
+        }
+        console.log(response)
 		
-					userId = response.id;
+        
+        userId = response.id;
 
-					// console.log(userId);
-					
-					localStorage.setItem("userIDInput",userId);
+        // console.log(userId);
+        
+        localStorage.setItem("userIDInput",userId);
 
-					localStorage.getItem("userIDInput");
-			
-					firstName = response.firstName;
-					lastName = response.lastName;
+        localStorage.getItem("userIDInput");
 
-					saveCookie();
-		
-					window.location.href = "../html/contacts.html";
+        firstName = response.firstName;
+        lastName = response.lastName;
+
+
+
+        saveCookie();
+        
+        setTimeout(() => window.location.href = "/src/html/contacts.html", 10*1000)
 				
 	}
 
@@ -198,21 +182,30 @@ function readCookie() {
 */
 }
 
-function requestHandler(url = "", formData = {}, rtype = "POST") {
-    fetch(url, {
+// TODO: Think over removal of default values
+async function requestHandler(url = "", formData = {}, rtype = "POST") {
+    if (formData === {}) {
+        console.log("Bad input data")
+        return await { error: "No input data" }
+    }
+
+    let response = await fetch(url, {
         method: rtype,
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(formData)
-    }).then(function(response) {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    }).catch(e => {
-        document.getElementById('post-result').innerHTML = `${e}`;
     })
+
+    if (!response.ok) {
+        document.getElementById('post-result').innerHTML = `${response.status}`;
+
+        // TODO: Make better error response message
+        return await { error: "Bad response from API"};
+    }
+
+    return await response.json();
+
 }
 
 function setFormMessage(formElement, type, message) {
