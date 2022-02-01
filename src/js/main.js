@@ -204,7 +204,7 @@ function requestHandler(url = "", formData = {}, rtype = "POST") {
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
-        body: formData
+        body: JSON.stringify(formData)
     }).then(function(response) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
