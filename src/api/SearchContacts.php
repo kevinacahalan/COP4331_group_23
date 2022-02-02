@@ -11,40 +11,59 @@
 	$lastName = $inData["lastName"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
+	if ( $conn->connect_error ) 
 	{
 		returnWithError( $conn->connect_error );
 	} 
 	else
 	{	
 
-		if(empty($firstName))
+		if( empty($firstName) )
 		{
-			$stmt = $conn->prepare("select * from Contacts where UserId=? and LastName like ?");
+			$stmt = $conn->prepare(
+				"SELECT * FROM Contacts WHERE
+				 UserId = ? AND
+				 LastName LIKE ?"
+			);
 			$stmt->bind_param("ss", $userId, $lastName);
 		}
-		else if(empty($lastName))
+		else if( empty($lastName) )
 		{
-			$stmt = $conn->prepare("select * from Contacts where UserId=? and FirstName like ?");
+			$stmt = $conn->prepare(
+				"SELECT * FROM Contacts WHERE
+				 UserId = ? AND
+				 FirstName LIKE ?"
+			);
 			$stmt->bind_param("ss", $userId, $firstName);
 		}
 		else
 		{
-			$stmt = $conn->prepare("select * from Contacts where UserId=? and FirstName like ? and LastName like ?");
+			$stmt = $conn->prepare(
+				"SELECT * FROM Contacts WHERE
+				 UserId = ? AND
+				 FirstName LIKE ? AND
+				 LastName LIKE ?"
+			);
 			$stmt->bind_param("sss", $userId, $firstName, $lastName);
 		}
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
 		
-		while($row = $result->fetch_assoc())
+		while( $row = $result->fetch_assoc() )
 		{
 			if( $searchCount > 0 )
 			{
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '{"contactId":' . $row["ID"] . ',"firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","email":"' . $row["Email"] . '","phoneNumber":"' . $row["PhoneNumber"] . '"}';
+			$searchResults .= '{
+				"contactId":' . $row["ID"] . ',
+				"firstName":"' . $row["FirstName"] . '",
+				"lastName":"' . $row["LastName"] . '",
+				"email":"' . $row["Email"] . '",
+				"phoneNumber":"' . $row["PhoneNumber"] . '"
+			}';
 		}
 		
 		if( $searchCount == 0 )
@@ -73,13 +92,21 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{
+			"contactId":0,
+			"firstName":"",
+			"lastName":"",
+			"error":"' . $err . '"
+		}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
 	function returnWithInfo( $searchResults )
 	{
-		$retValue = '{"results":[' . $searchResults . '],"error":""}';
+		$retValue = '{
+			"results":[' . $searchResults . '],
+			"error":""
+		}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
