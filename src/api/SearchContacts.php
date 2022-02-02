@@ -1,13 +1,4 @@
 <?php
-	// This endpoint takes in a json formatted like this:
-	// 	{
-	// 		"login": "PLACEHOLDER",
-	// 		"password": "PLACEHOLDER",
-	// 		"search" : {
-	// 			"firstName" : "PLACEHOLDER",
-	// 			"lastName" : "PLACEHOLDER"
-	// 		}
-	// 	}
 
 
 	$inData = getRequestInfo();
@@ -15,13 +6,9 @@
 	$searchResults = "";
 	$searchCount = 0;
 
-
-	$Login = $inData["login"];
-	$Password = $inData["password"];
-
-	$search = $inData["search"];
-	$firstName = $search["firstName"];
-	$lastName = $search["lastName"];
+	$userId = $inData["userId"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
@@ -30,7 +17,6 @@
 	} 
 	else
 	{	
-		$userId = getUserID($conn, $Login, $Password);
 
 		if(empty($firstName))
 		{
@@ -72,29 +58,6 @@
 		
 		$stmt->close();
 		$conn->close();
-	}
-
-	// THIS DAM FUNCTION SHOULD BE MADE GLOBAL OR SOMETHING... AddContact HAS SAME FUNCTION
-	// Grabs userID for login password combination, spits error and quits
-	// if no combination found.
-	function getUserID($conn, $login, $password)
-	{
-		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
-		$stmt->bind_param("ss", $login, $password);
-		$stmt->execute();
-		$result = $stmt->get_result();
-
-		if( $row = $result->fetch_assoc() )
-		{
-			$stmt->close();
-			return $row['ID'];
-		}
-		else
-		{
-			returnWithError("No Records Found");
-			$stmt->close();
-			exit();
-		}
 	}
 
 	function getRequestInfo()
