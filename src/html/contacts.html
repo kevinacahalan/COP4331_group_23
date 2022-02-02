@@ -11,6 +11,7 @@
             document.addEventListener(
                 "DOMContentLoaded",
                 function () {
+                    saveCookie();
                     readCookie();
                 },
                 false
@@ -38,7 +39,7 @@
                         Operations
                     </div>
                     <div class="h-full px-10 flex flex-col justify-center items-center">
-                        <form class="flex flex-col mb-4">
+                        <div class="flex flex-col mb-4">
                             <label for="fname" class="ml-3">First name:</label><br />
                             <input
                                 type="text"
@@ -77,11 +78,11 @@
                             />
                             <div class="w-full flex flex-row justify-center space-x-2">
                                 <button class="btn-default" onclick="modifyContacts()">Add</button>
-                                <button class="btn-default" onclick="searchContact()">
+                                <button class="btn-default" onclick="searchContacts()">
                                     Search
                                 </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-white border-2 w-3/4 mb-4 flex flex-col">
@@ -98,10 +99,10 @@
                             <div>Smith</div>
                             <div>john.smith@email.com</div>
                             <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
+                            <button id="editButton" data-id="123" onclick="updateContact(this);">
                                 <i class="fas fa-user-edit"></i>
                             </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
+                            <button id="deleteButton" data-id="123" onclick="deleteContact(this);">
                                 <i class="fas fa-user-times"></i>
                             </button>
                         </div>
@@ -110,202 +111,10 @@
                             <div>Smith</div>
                             <div>john.smith@email.com</div>
                             <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
+                            <button id="editButton" data-id="124" onclick="updateContact();">
                                 <i class="fas fa-user-edit"></i>
                             </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" onclick="modifyContacts('/EditContact')">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" onclick="modifyContacts('/DeleteContact')">
+                            <button id="deleteButton" data-id="124" onclick="deleteContact();">
                                 <i class="fas fa-user-times"></i>
                             </button>
                         </div>
@@ -314,7 +123,6 @@
             </div>
             <div id="post-result" class="w-max h-fit text-center"></div>
         </div>
-
         <script src="../js/code.js"></script>
     </body>
 </html>
