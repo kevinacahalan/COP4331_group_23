@@ -44,7 +44,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '{"id":' . $row["ID"] . ',"firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","email":"' . $row["Email"] . '","phoneNumber":"' . $row["PhoneNumber"] . '"}';
+			$searchResults .= '{"contactId":' . $row["ID"] . ',"firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","email":"' . $row["Email"] . '","phoneNumber":"' . $row["PhoneNumber"] . '"}';
 		}
 		
 		if( $searchCount == 0 )
