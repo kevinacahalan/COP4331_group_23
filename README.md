@@ -26,7 +26,9 @@ The open-source, server-sided scripting language used for processing backend com
 ├── README.md
 └── src
     ├── index.html
-    ├── styles
+    ├── api
+    ├── html
+    ├── css
     ├── js    
     └── media
         ├── images
