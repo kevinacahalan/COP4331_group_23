@@ -125,14 +125,6 @@ async function doSignUp() {
 	}	
 }
 
-function doLogout() {
-    userId = 0;
-    firstName = "";
-    lastName = "";
-    document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    window.location.replace("../index.html");
-}
-
 function saveCookie() {
     let minutes = 20;
     let date = new Date();
@@ -146,15 +138,6 @@ function saveCookie() {
         userId +
         ";expires=" +
         date.toGMTString();
-}
-
-function getID() {
-    const id = document.cookie.split(";")[0].split("=")[1];
-    if (!document.cookie || !id) {
-        return new Error("getID error: invalid cookie");
-    }
-
-    return id;
 }
 
 function readCookie() {
