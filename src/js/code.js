@@ -193,41 +193,41 @@ function deleteContact(button) {
 }
 
 // Builds the elements to display in the contacts output table
-function buildContact(data) {
+function buildContact(contact) {
     let contact = document.createElement('div');
     contact.classList.add('text-center w-full space-around');
     
     const fname = document.createElement('div')
-    fname.innerText = `${ data.firstName }`;
-    fname.id = `${ data.contactId }-fname`;
+    fname.innerText = `${ contact.firstName }`;
+    fname.id = `${ contact.contactId }-fname`;
     
     const lname = document.createElement('div')
-    lname.innerText = `${ data.lastName }`;
-    lname.id = `${ data.contactId }-lname`;
+    lname.innerText = `${ contact.lastName }`;
+    lname.id = `${ contact.contactId }-lname`;
     
     const email = document.createElement('div')
-    email.innerText = `${ data.email }`;
-    email.id = `${ data.contactId }-email`;
+    email.innerText = `${ contact.email }`;
+    email.id = `${ contact.contactId }-email`;
     
     const phone = document.createElement('div')
-    phone.innerText = `${ data.phoneNumber }`;
-    phone.id = `${ data.contactId }-phone`;
+    phone.innerText = `${ contact.phoneNumber }`;
+    phone.id = `${ contact.contactId }-phone`;
     
-    contact.setAttribute('data-id', data.contactId);
+    contact.setAttribute('data-contactId', contact.contactId);
     
     // Create Edit button
     const editButton = document.createElement('button');
     editButton.append('<i class="fas fa-user-edit"></i>');
     editButton.classList.add('flex', 'items-center');
     editButton.setAttribute('onclick', updateContact(this));
-    editButton.setAttribute('data-contactId', data.contactId)
+    editButton.setAttribute('data-contactId', contact.contactId)
     
     // Create Delete button
     const deleteButton = document.createElement('button');
     deleteButton.append('<i class="fas fa-user-times"></i>');
     deleteButton.classList.add('flex', 'items-center');
     deleteButton.setAttribute('onclick', deleteContact(this));
-    editButton.setAttribute('data-contactId', data.id);
+    editButton.setAttribute('data-contactId', contact.contactId);
     
     // Add both buttons to contact object
     contact.append(editButton, deleteButton);
