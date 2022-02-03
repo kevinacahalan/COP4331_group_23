@@ -2,8 +2,7 @@
 
 	// This endpoint takes in a json formatted like this:
 	// 	{
-	// 		"login": "PLACEHOLDER",
-	// 		"password": "PLACEHOLDER",
+	// 		"userId": "PLACEHOLDER",
 	// 		"contact" : {
 	// 			"firstName" : "PLACEHOLDER",
 	// 			"lastName" : "PLACEHOLDER",
@@ -14,8 +13,7 @@
 
 	$inData = getRequestInfo();
 	
-	$Login = $inData["login"];
-	$Password = $inData["password"];
+	$userId = $inData["userId"];
 	$contact = $inData["contact"];
 
 	$firstName = $contact["firstName"];
@@ -34,8 +32,6 @@
 	} 
 	else
 	{	
-		$userID = getUserID($conn, $Login, $Password);
-
 		try {
 			$stmt = $conn->prepare("INSERT into Contacts (FirstName,LastName,Email,PhoneNumber,UserID) VALUES(?,?,?,?,?)");
 			$stmt->bind_param("sssss", $firstName, $lastName, $email, $phoneNumber, $userID);
@@ -48,28 +44,6 @@
 
 		$stmt->close();
 		$conn->close();
-	}
-
-	// Grabs userID for login password combination, spits error and quits
-	// if no combination found.
-	function getUserID($conn, $login, $password)
-	{
-		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
-		$stmt->bind_param("ss", $login, $password);
-		$stmt->execute();
-		$result = $stmt->get_result();
-
-		if( $row = $result->fetch_assoc() )
-		{
-			$stmt->close();
-			return $row['ID'];
-		}
-		else
-		{
-			returnWithError("No Records Found");
-			$stmt->close();
-			exit();
-		}
 	}
 
 	function getRequestInfo()
