@@ -5,7 +5,6 @@ let lastName = "";
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-        saveCookie();
         readCookie();
 
         let contacts = [
@@ -24,6 +23,8 @@ document.addEventListener(
                 contactId: "1235",
             },
         ];
+
+        // For testing
         for (let i = 0; i < 4; i++) insertContacts(contacts);
 
         document.getElementById("search-open").addEventListener("click", function () {
@@ -53,7 +54,7 @@ document.addEventListener(
         });
 
         document.getElementById("delete-submit").addEventListener("click", function () {
-            let pwd = document.getElementById("delete-pwd").value;
+            let pwd = document.getElementById("delete-password").textContent;
             let contactId = document.getElementById("delete-modal").dataset.contactId;
             document.getElementById("delete-modal").classList.add("hidden");
 
@@ -255,9 +256,9 @@ function deleteContact(contactId, pwd) {
     const url = `${urlBase}${endpoint}${extension}`;
 
     const jsonPayload = {
-        contactId: contactId,
         userId: getID(),
         password: pwd,
+        contactId: contactId,
     };
 
     fetch(url, {
@@ -334,7 +335,7 @@ function buildContact(contact) {
         const editModal = document.getElementById("edit-modal");
         editModal.setAttribute("data-contactId", contact.contactId);
         editModal.classList.replace("hidden", "flex");
-        document.getElementById('edit-fname').focus();
+        document.getElementById("edit-fname").focus();
     });
 
     // Create Delete button
@@ -356,7 +357,7 @@ function buildContact(contact) {
         const deleteModal = document.getElementById("delete-modal");
         deleteModal.setAttribute("data-contactId", contact.contactId);
         deleteModal.classList.remove("hidden");
-        document.getElementById('delete-pw').focus();
+        document.getElementById("delete-password").focus();
     });
 
     // Add both buttons to contact object
