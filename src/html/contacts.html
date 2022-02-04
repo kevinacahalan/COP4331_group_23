@@ -7,42 +7,50 @@
         <title>Contacts</title>
         <link rel="stylesheet" href="../css/output.css" />
         <script src="https://kit.fontawesome.com/d06c39017a.js" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-            document.addEventListener(
-                "DOMContentLoaded",
-                function () {
-                    readCookie();
-                },
-                false
-            );
-        </script>
+        <script src="../js/code.js"></script>
     </head>
-    <body class="flex flex-col justify-center w-full h-full bg-blue-500">
+    <body class="flex flex-col justify-center items-center w-full h-full bg-blue-500 relative">
         <!-- Main content panel -->
-        <div
-            class="sm:w-full md:w-2/3 h-3/4 bg-white mx-auto border-box shadow-2xl border-slate-500 border-2"
-        >
+        <div class="w-full h-full bg-white mx-auto border-box shadow-2xl border-slate-500 border-2">
             <!-- Header Content -->
-            <div class="flex flex-row relative justify-center py-2">
-                <div class="text-center text-4xl">Contacts</div>
-                <div id="username-display" class="absolute right-0 my-2 mr-10"></div>
-                <button class="absolute right-0 my-2 mr-3" onclick="doLogout()">
+            <div class="flex flex-row px-2 py-2 justify-center items-center gap-x-6 relative">
+                <div class="ml-28 text-4xl">Contacts</div>
+                <div id="username-display" class="absolute right-0 mr-12"></div>
+                <button
+                    class="absolute right-0 mr-4 hover:border-2 px-1 hover:rounded-xl"
+                    onclick="doLogout()"
+                >
                     <i class="fas fa-power-off"></i>
                 </button>
             </div>
             <div class="h-1 w-full bg-slate-500"></div>
 
             <div class="flex flex-row justify-center h-5/6">
-                <div class="bg-white border-2 sm:w-1/2 md:w-1/4 mb-4 flex flex-col">
-                    <div class="text-center sm:text-lg md:text-2xl border-b-2 p-1 mb-2">
-                        Operations
+                <div class="bg-white border-2 w-1/4 mb-4 flex flex-col">
+                    <div class="text-lg text-center border-b-2 p-1 mb-2">Operations</div>
+                    <div class="flex flex-row border-b-2 border-b-slate-400">
+                        <button
+                            id="search-open"
+                            class="border-2 px-2 py-1 border-slate-200 hover:bg-slate-300"
+                        >
+                            Search
+                        </button>
+                        <button
+                            id="add-open"
+                            class="border-2 px-2 py-1 active-border-slate-300 hover:bg-slate-300"
+                        >
+                            Add
+                        </button>
                     </div>
-                    <div class="h-full px-10 flex flex-col justify-center items-center">
-                        <div class="flex flex-col mb-4">
+                    <div
+                        id="search-modal"
+                        class="h-1/2 flex-col justify-center items-center px-5 border-2 hidden"
+                    >
+                        <form class="flex flex-col mb-4">
                             <label for="fname" class="ml-3">First name:</label><br />
                             <input
                                 type="text"
-                                id="fname"
+                                id="search-fname"
                                 name="fname"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
@@ -51,7 +59,42 @@
                             <label for="lname" class="ml-3">Last name:</label><br />
                             <input
                                 type="text"
-                                id="lname"
+                                id="search-lname"
+                                name="lname"
+                                class="w-full border-2 mb-2"
+                                autocomplete="off"
+                                required
+                            /><br />
+                            <div class="w-full flex flex-row justify-center space-x-2">
+                                <button
+                                    id="search-submit"
+                                    class="button-4 focus:border-slate-800"
+                                    role="button"
+                                    type="submit"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        id="add-modal"
+                        class="h-1/2 hidden flex-col justify-center items-center px-5 border-2 py-4"
+                    >
+                        <form class="flex flex-col mb-4">
+                            <label for="fname" class="ml-3">First name:</label><br />
+                            <input
+                                type="text"
+                                id="add-fname"
+                                name="fname"
+                                class="w-full border-2 mb-2"
+                                autocomplete="off"
+                                required
+                            /><br />
+                            <label for="lname" class="ml-3">Last name:</label><br />
+                            <input
+                                type="text"
+                                id="add-lname"
                                 name="lname"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
@@ -60,7 +103,7 @@
                             <label for="email" class="ml-3">Email:</label><br />
                             <input
                                 type="email"
-                                id="email"
+                                id="add-email"
                                 name="email"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
@@ -69,59 +112,109 @@
                             <label for="phone" class="ml-3">Phone number:</label>
                             <input
                                 type="text"
-                                id="phone"
+                                id="add-phone"
                                 name="phone"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
                                 required
                             />
                             <div class="w-full flex flex-row justify-center space-x-2">
-                                <button class="btn-default" onclick="modifyContacts()">Add</button>
-                                <button class="btn-default" onclick="searchContacts()">
-                                    Search
+                                <button
+                                    id="add-submit"
+                                    class="button-4"
+                                    role="button"
+                                    type="submit"
+                                >
+                                    Add
                                 </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
+                    <div class="h-full border-2"></div>
                 </div>
-                <div class="bg-white border-2 w-3/4 mb-4 flex flex-col">
-                    <div class="text-center sm:text-lg md:text-2xl border-b-2 p-1 mb-2">
-                        Results
-                    </div>
+                <div class="bg-white border-2 w-full mb-4 flex flex-col">
+                    <div class="text-center text-lg border-b-2 p-1 mb-2">Results</div>
                     <!-- Contacts -->
                     <div
                         id="contacts-list"
                         class="flex flex-col items-center overflow-scroll h-full"
-                    >
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" data-id="123" onclick="updateContact(this);">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" data-id="123" onclick="deleteContact(this);">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                        <div class="flex flex-row justify-between my-2">
-                            <div>John</div>
-                            <div>Smith</div>
-                            <div>john.smith@email.com</div>
-                            <div>123-456-7890</div>
-                            <button id="editButton" data-id="124" onclick="updateContact();">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button id="deleteButton" data-id="124" onclick="deleteContact();">
-                                <i class="fas fa-user-times"></i>
-                            </button>
-                        </div>
-                    </div>
+                    ></div>
                 </div>
             </div>
             <div id="post-result" class="w-max h-fit text-center"></div>
         </div>
-        <script src="../js/code.js"></script>
+        <!-- Edit Contact -->
+        <div id="edit-modal" class="absolute bg-white w-80 p-4 z-10 border-2 hidden">
+            <button id="edit-close" class="absolute right-0 mr-6 text-lg hover:scale-110">x</button>
+            <form id="edit-form" class="flex flex-col">
+                <div class="w-full text-center text-lg mb-3 underline">Edit Contact</div>
+                <label for="fname" class="ml-3">First name:</label><br />
+                <input
+                    type="text"
+                    id="edit-fname"
+                    name="fname"
+                    class="w-full border-2 mb-2"
+                    autocomplete="off"
+                    required
+                /><br />
+                <label for="lname" class="ml-3">Last name:</label><br />
+                <input
+                    type="text"
+                    id="edit-lname"
+                    name="lname"
+                    class="w-full border-2 mb-2"
+                    autocomplete="off"
+                    required
+                /><br />
+                <label for="email" class="ml-3">Email:</label><br />
+                <input
+                    type="email"
+                    id="edit-email"
+                    name="email"
+                    class="w-full border-2 mb-2"
+                    autocomplete="off"
+                    required
+                /><br />
+                <label for="phone" class="ml-3">Phone number:</label>
+                <input
+                    type="text"
+                    id="edit-phone"
+                    name="phone"
+                    class="w-full border-2 mb-2"
+                    autocomplete="off"
+                    required
+                />
+                <div class="w-full flex flex-row justify-center space-x-2">
+                    <button id="edit-submit" class="button-4" role="button" type="submit">
+                        Edit
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- Delete Contact -->
+        <div id="delete-modal" class="absolute bg-white w-80 p-4 z-12 border-2 h-60 hidden">
+            <button id="delete-close" class="text-lg hover:scale-110 float-right px-2">x</button>
+            <div
+                id="delete-prompt"
+                class="w-full mt-12 text-center italic text-slate-500 mb-4"
+            ></div>
+            <form id="delete-form" class="flex flex-col items-center">
+                <label class="mb-2">Confirm Password:</label>
+                <input
+                    type="password"
+                    id="delete-pw"
+                    name="password"
+                    class="border-2 mb-2"
+                    autocomplete="current-password"
+                    required
+                />
+                <button
+                    id="delete-submit"
+                    class="border-2 rounded-md bg-slate-100 w-4/5 text-red-500 hover:bg-slate-200"
+                >
+                    Yes, delete this contact.
+                </button>
+            </form>
+        </div>
     </body>
 </html>

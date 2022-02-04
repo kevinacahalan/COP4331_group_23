@@ -2,9 +2,6 @@ const urlBase = "https://collectivecontacts.xyz/src/api/";
 const extension = ".php";
 //import { md5 } from './md5.js';
 
-let userId = 0;
-let firstName = "";
-let lastName = "";
 
 async function doLogin() {
 
@@ -138,31 +135,6 @@ function saveCookie() {
         userId +
         ";expires=" +
         date.toGMTString();
-}
-
-function readCookie() {
-    userId = -1;
-    let data = document.cookie;
-    let splits = data.split(",");
-    for (var i = 0; i < splits.length; i++) {
-        let thisOne = splits[i].trim();
-        let tokens = thisOne.split("=");
-        if (tokens[0] == "firstName") {
-            firstName = tokens[1];
-        } else if (tokens[0] == "lastName") {
-            lastName = tokens[1];
-        } else if (tokens[0] == "userId") {
-            userId = parseInt(tokens[1].trim());
-        }
-    }
-    /*
-    if (userId < 0) {
-        window.location.replace("../index.html");
-    } else {
-        document.getElementById("username-display").innerHTML =
-            `${firstName} ${lastName}`;
-    }
-*/
 }
 
 // TODO: Think over removal of default values
