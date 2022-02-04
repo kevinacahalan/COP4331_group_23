@@ -34,7 +34,7 @@
 	{	
 		try {
 			$stmt = $conn->prepare("INSERT into Contacts (FirstName,LastName,Email,PhoneNumber,UserID) VALUES(?,?,?,?,?)");
-			$stmt->bind_param("sssss", $firstName, $lastName, $email, $phoneNumber, $userID);
+			$stmt->bind_param("sssss", $firstName, $lastName, $email, $phoneNumber, $userId);
 			$stmt->execute();
 
 			returnWithError(""); // Account made, no error
