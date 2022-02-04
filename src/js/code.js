@@ -1,6 +1,6 @@
-let userId = 1;
-let firstName = "Justice";
-let lastName = "Smith";
+let userId = 0;
+let firstName = "";
+let lastName = "";
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -24,7 +24,7 @@ document.addEventListener(
                 contactId: "1235",
             },
         ];
-        for (let i = 0; i < 100; i++) insertContacts(contacts);
+        for (let i = 0; i < 4; i++) insertContacts(contacts);
 
         document.getElementById("search-open").addEventListener("click", function () {
             this.classList.add("border-slate-400");
@@ -34,6 +34,7 @@ document.addEventListener(
             document.getElementById("add-modal").classList.add("hidden");
             document.getElementById("search-fname").focus();
         });
+
         document.getElementById("add-open").addEventListener("click", function () {
             this.classList.add("border-slate-400");
             document.getElementById("search-open").classList.remove("border-slate-400");
@@ -41,11 +42,6 @@ document.addEventListener(
             document.getElementById("add-modal").classList.replace("hidden", "flex");
             document.getElementById("search-modal").classList.add("hidden");
             document.getElementById("add-fname").focus();
-        });
-
-        document.getElementById("edit-open").addEventListener("click", function () {
-            document.getElementById("edit-modal").classList.replace("hidden", "flex");
-            document.getElementById("edit-fname").focus();
         });
 
         document.getElementById("edit-submit").addEventListener("click", function () {
@@ -337,7 +333,8 @@ function buildContact(contact) {
         document.getElementById("edit-form").reset();
         const editModal = document.getElementById("edit-modal");
         editModal.setAttribute("data-contactId", contact.contactId);
-        editModal.classList.remove("hidden");
+        editModal.classList.replace("hidden", "flex");
+        document.getElementById('edit-fname').focus();
     });
 
     // Create Delete button
@@ -359,6 +356,7 @@ function buildContact(contact) {
         const deleteModal = document.getElementById("delete-modal");
         deleteModal.setAttribute("data-contactId", contact.contactId);
         deleteModal.classList.remove("hidden");
+        document.getElementById('delete-pw').focus();
     });
 
     // Add both buttons to contact object
