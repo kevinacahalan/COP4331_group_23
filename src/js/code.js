@@ -65,10 +65,10 @@ document.addEventListener(
             updateContact(contact);
 
             // Reset fields
-            document.getElementById("edit-fname").textContent = "";
-            document.getElementById("edit-lname").textContent = "";
-            document.getElementById("edit-email").textContent = "";
-            document.getElementById("edit-phone").textContent = "";
+            document.getElementById("edit-fname").reset();
+            document.getElementById("edit-lname").reset();
+            document.getElementById("edit-email").reset();
+            document.getElementById("edit-phone").reset();
         });
 
         document.getElementById("edit-close").addEventListener("click", function () {
@@ -102,7 +102,7 @@ document.addEventListener(
             document.getElementById("delete-modal").classList.add("hidden");
 
             // Reset dynamic fields
-            document.getElementById("delete-prompt").textContent = "";
+            document.getElementById("delete-prompt").reset();
         });
     },
     false
@@ -175,7 +175,7 @@ function searchContacts() {
     const url = `${urlBase}${endpoint}${extension}`;
 
     const jsonPayload = {
-        userId: getID(),
+        userId: getId(),
         firstName: document.getElementById("search-fname").textContent,
         lastName: document.getElementById("search-lname").textContent,
     };
@@ -287,7 +287,7 @@ function deleteContact() {
     const url = `${urlBase}${endpoint}${extension}`;
 
     const contact = {
-        userId: getID(),
+        userId: getId(),
         password: document.getElementById("delete-password").textContent,
         contactId: document.getElementById("delete-modal").dataset.contactId,
     };
