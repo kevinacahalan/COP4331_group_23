@@ -5,71 +5,105 @@ let lastName = "";
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+        saveCookie();
+        getId();
         readCookie();
 
-        let contacts = [
-            {
-                firstName: "Thomas",
-                lastName: "Jefferson",
-                email: "tjinva@gmail.com",
-                phoneNumber: "1234567890",
-                contactId: "1123",
-            },
-            {
-                firstName: "George",
-                lastName: "Washington",
-                email: "wowiewash@yahoo.com",
-                phoneNumber: "1234567890",
-                contactId: "1235",
-            },
-        ];
-
-        // For testing
-        for (let i = 0; i < 4; i++) insertContacts(contacts);
-
         document.getElementById("search-open").addEventListener("click", function () {
+            // Indicate selection
             this.classList.add("border-slate-400");
+
+            // Reset additional states to inactive
             document.getElementById("add-open").classList.remove("border-slate-400");
 
+            // Add to display
             document.getElementById("search-modal").classList.replace("hidden", "flex");
+
+            // Remove additional states from display
             document.getElementById("add-modal").classList.add("hidden");
+
+            // Move cursor to first field
             document.getElementById("search-fname").focus();
         });
 
         document.getElementById("add-open").addEventListener("click", function () {
+            // Indicate selection
             this.classList.add("border-slate-400");
+
+            // Reset additional states to inactive
             document.getElementById("search-open").classList.remove("border-slate-400");
 
+            // Add to display
             document.getElementById("add-modal").classList.replace("hidden", "flex");
+
+            // Remove additional states from display
             document.getElementById("search-modal").classList.add("hidden");
+
+            // Move cursor to first field
             document.getElementById("add-fname").focus();
         });
 
         document.getElementById("edit-submit").addEventListener("click", function () {
+            // Remove from display
             document.getElementById("edit-modal").classList.add("hidden");
+
+            // Build payload from fields (completion ensured with 'required' attribute)
+            let contact = {
+                firstName: document.getElementById("edit-fname").textContent,
+                lastName: document.getElementById("edit-lname").textContent,
+                email: document.getElementById("edit-email").textContent,
+                phoneNumber: document.getElementById("edit-phone").textContent,
+                contactId: this.dataset.contactId,
+            };
+
+            // Process request
+            updateContact(contact);
+
+            // Reset fields
+            document.getElementById("edit-fname").textContent = "";
+            document.getElementById("edit-lname").textContent = "";
+            document.getElementById("edit-email").textContent = "";
+            document.getElementById("edit-phone").textContent = "";
         });
 
         document.getElementById("edit-close").addEventListener("click", function () {
+            // Remove from display
             document.getElementById("edit-modal").classList.add("hidden");
+
+            // Reset dynamic fields
+            document.getElementById("edit-fname").reset();
+            document.getElementById("edit-lname").reset();
+            document.getElementById("edit-email").reset();
+            document.getElementById("edit-phone").reset();
         });
 
         document.getElementById("delete-submit").addEventListener("click", function () {
-            let pwd = document.getElementById("delete-password").textContent;
-            let contactId = document.getElementById("delete-modal").dataset.contactId;
+            // Remove from display
             document.getElementById("delete-modal").classList.add("hidden");
 
+            // Process fields
+            const pwd = document.getElementById("delete-password").textContent;
+            const contactId = document.getElementById("delete-modal").dataset.contactId;
+
             deleteContact(contactId, md5(pwd));
+
+            // Reset dynamic fields
+            document.getElementById("delete-prompt").reset();
+            document.getElementById("delete-password").reset();
         });
 
         document.getElementById("delete-close").addEventListener("click", function () {
-            document.getElementById("delete-prompt").textContent = "";
+            // Remove from display
             document.getElementById("delete-modal").classList.add("hidden");
+
+            // Reset dynamic fields
+            document.getElementById("delete-prompt").textContent = "";
         });
     },
     false
 );
 
-function insertContacts(contacts) {
+function insertContact(contacts) {
     let contactList = document.getElementById("contacts-list");
 
     contacts.forEach((el) => contactList.append(buildContact(el)));
@@ -83,7 +117,7 @@ function doLogout() {
     window.location.replace("../index.html");
 }
 
-function getID() {
+function getId() {
     const id = document.cookie.split("=")[3];
     if (!document.cookie || !id) {
         return new Error("getID error: invalid cookie");
@@ -130,21 +164,16 @@ function readCookie() {
 
 function searchContacts() {
     const endpoint = "/SearchContacts";
-    let result = document.getElementById("post-result");
+    let opOutput = document.getElementById("post-result");
+    opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
 
-    const fname = document.getElementById("search-fname").value;
-    const lname = document.getElementById("search-lname").value;
-
     const jsonPayload = {
         userId: getID(),
-        firstName: fname,
-        lastName: lname,
+        firstName: document.getElementById("search-fname").textContent,
+        lastName: document.getElementById("search-lname").textContent,
     };
-
-    let contactList = document.getElementById("contacts-list");
-    result.innerHTML = "";
 
     fetch(url, {
         method: "POST",
@@ -158,10 +187,10 @@ function searchContacts() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             } else {
                 if (response.results.length > 0) {
-                    result.innerText = "Contact(s) found!";
-                    response.results.forEach((el) => contactList.append(buildContact(el)));
+                    opOutput.textContent = "Contact(s) found!";
+                    insertContacts(response.results);
                 } else {
-                    result.innerText = "No contact(s) matching search parameters found!";
+                    opOutput.textContent = "No contact(s) matching search parameters found!";
                 }
             }
         })
@@ -171,9 +200,10 @@ function searchContacts() {
 }
 
 function addContact() {
-    const endpoint = "/AddContact.php";
+    const endpoint = "/AddContact";
     const opOutput = document.getElementById("post_result");
-
+    opOutput.innerHTML = "";
+    
     const url = `${urlBase}${endpoint}${extension}`;
 
     const fname = document.getElementById("add-fname").value;
@@ -202,7 +232,7 @@ function addContact() {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             } else {
-                opOutput.innerText = "Contact added successfully.";
+                opOutput.textContent = "Contact added successfully.";
             }
         })
         .catch((e) => {
@@ -213,21 +243,16 @@ function addContact() {
 function updateContact() {
     const endpoint = "/Update";
     const opOutput = document.getElementById("post_result");
+    opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
 
-    const fname = document.getElementById(`${button.dataset.contactId}-fname`).value;
-    const lname = document.getElementById(`${button.dataset.contactId}-lname`).value;
-    const email = document.getElementById(`${button.dataset.contactId}-email`).value;
-    const phone = document.getElementById(`${button.dataset.contactId}-phone`).value;
-    const contactId = button.dataset.contactId;
-
-    const jsonPayload = {
-        firstName: fname,
-        lastName: lname,
-        email: email,
-        phoneNumber: phone,
-        contactId: contactId,
+    const contact = {
+        firstName: document.getElementById("edit-fname").textContent,
+        lastName: document.getElementById("edit-lname").textContent,
+        email: document.getElementById("edit-email").textContent,
+        phoneNumber: document.getElementById("edit-phone").textContent,
+        contactId: document.getElementById("edit-modal").dataset.contactId,
     };
 
     fetch(url, {
@@ -235,7 +260,7 @@ function updateContact() {
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
-        body: jsonPayload,
+        body: contact,
     })
         .then(function (response) {
             if (!response.ok) {
@@ -249,16 +274,17 @@ function updateContact() {
         });
 }
 
-function deleteContact(contactId, pwd) {
+function deleteContact() {
     const endpoint = "/Delete";
     const opOutput = document.getElementById("post_result");
+    opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
 
-    const jsonPayload = {
+    const contact = {
         userId: getID(),
-        password: pwd,
-        contactId: contactId,
+        password: document.getElementById("delete-password").textContent,
+        contactId: document.getElementById("delete-modal").dataset.contactId,
     };
 
     fetch(url, {
@@ -266,7 +292,7 @@ function deleteContact(contactId, pwd) {
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
-        body: jsonPayload,
+        body: contact,
     })
         .then(function (response) {
             if (!response.ok) {
