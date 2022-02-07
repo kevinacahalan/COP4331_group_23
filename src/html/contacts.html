@@ -54,7 +54,6 @@
                                 name="fname"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
-                                required
                             /><br />
                             <label for="lname" class="ml-3">Last name:</label><br />
                             <input
@@ -63,7 +62,6 @@
                                 name="lname"
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
-                                required
                             /><br />
                             <div class="w-full flex flex-row justify-center space-x-2">
                                 <button
@@ -130,7 +128,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="h-full border-2"></div>
+                    <div id="post-result" class="h-full border-2"></div>
                 </div>
                 <div class="bg-white border-2 w-full mb-4 flex flex-col">
                     <div class="text-center text-lg border-b-2 p-1 mb-2">Results</div>
@@ -141,7 +139,6 @@
                     ></div>
                 </div>
             </div>
-            <div id="post-result" class="w-max h-fit text-center"></div>
         </div>
         <!-- Edit Contact -->
         <div id="edit-modal" class="absolute bg-white w-80 p-4 z-10 border-2 hidden">

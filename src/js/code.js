@@ -206,15 +206,15 @@ function searchContacts() {
 
 function addContact() {
     const endpoint = "/AddContact";
-    const opOutput = document.getElementById("post_result");
+    const opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
 
-    const fname = document.getElementById("add-fname").value;
-    const lname = document.getElementById("add-lname").value;
-    const email = document.getElementById("add-email").value;
-    const phone = document.getElementById("add-phone").value;
+    const fname = document.getElementById("add-fname").textContent;
+    const lname = document.getElementById("add-lname").textContent;
+    const email = document.getElementById("add-email").textContent;
+    const phone = document.getElementById("add-phone").textContent;
 
     const jsonPayload = {
         userId: getID(),
@@ -247,7 +247,7 @@ function addContact() {
 
 function updateContact() {
     const endpoint = "/Update";
-    const opOutput = document.getElementById("post_result");
+    const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
@@ -281,7 +281,7 @@ function updateContact() {
 
 function deleteContact() {
     const endpoint = "/Delete";
-    const opOutput = document.getElementById("post_result");
+    const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
