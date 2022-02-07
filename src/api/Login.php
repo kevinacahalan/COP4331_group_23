@@ -1,3 +1,5 @@
+<?php header('Access-Control-Allow-Origin: *');?>
+
 <?php
 	// This endpoint takes in a json formatted like this:
 	// 	{
