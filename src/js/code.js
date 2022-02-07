@@ -217,7 +217,7 @@ function addContact() {
     const phone = document.getElementById("add-phone").textContent;
 
     const jsonPayload = {
-        userId: getID(),
+        userId: getId(),
         contact: {
             firstName: fname,
             lastName: lname,
