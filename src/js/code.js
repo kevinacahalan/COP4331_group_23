@@ -27,7 +27,10 @@ document.addEventListener(
             document.getElementById("search-fname").focus();
         });
         
-        document.getElementById('search-submit').addEventListener("click", searchContacts);
+        document.getElementById('search-submit').addEventListener("click", function(e) {
+            e.preventDefault();
+            searchContacts();
+        });
 
         document.getElementById("add-open").addEventListener("click", function () {
             // Indicate selection
@@ -46,9 +49,14 @@ document.addEventListener(
             document.getElementById("add-fname").focus();
         });
         
-        document.getElementById('add-submit').addEventListener("click", addContact);
+        document.getElementById('add-submit').addEventListener("click", function(e) {
+            e.preventDefault();
+            addContact();
+        });
 
-        document.getElementById("edit-submit").addEventListener("click", function () {
+        document.getElementById("edit-submit").addEventListener("click", function (e) {
+            e.preventDefault();
+            
             // Remove from display
             document.getElementById("edit-modal").classList.add("hidden");
 
@@ -83,6 +91,8 @@ document.addEventListener(
         });
 
         document.getElementById("delete-submit").addEventListener("click", function () {
+            e.preventDefault();
+            
             // Remove from display
             document.getElementById("delete-modal").classList.add("hidden");
 
