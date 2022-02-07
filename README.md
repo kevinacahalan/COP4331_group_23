@@ -39,15 +39,33 @@ The open-source, server-sided scripting language used for processing backend com
 
 API endpoints are documented at [SwaggerHub](https://app.swaggerhub.com/apis/COP4331_group23/COP4331_group23/1.0.0).
 
+## Technical Analysis
+####  Design pattern for modal interaction:
+<div title="Justice">I</div> made the decision to "brand" opened edit and delete modals with data from the button responsible for opening them. I chose this approach because it seemed the simplest, though not the most orthogonal, implementation to complete.
+
+##### Detail
+When a contact is created, the contacts list entry is composed of 4 text-based divs and 2 button divs. Those buttons are unique to that table entry, having been created with the database-unique contactId referencing that particular entry in the database.
+
+On click, both the edit and delete buttons set the contactId data attribute of whichever modal is being opened to the referenced contactId in the button. In such a way, the contactId data attribute is 'passed' to the next component along the user interaction cycle.
+
+The current implementation simply overwrites the existing contactId data attribute value on subsequent clicks, rather than removing it completely from the modal's dataset.
+
+#### Considerations for future maintenance based on existing design pattern:
+Because the modals don't reset or remove the contactId from the last click, there may arise future bugs in that system. I can't think of any breaking cases as of Feb7 but the area seems nebulous enough to me to warrant catalog.
+
 ## Running instructions
 
 Visit [Collective Contacts](http://collectivecontacts.xyz) to log in.
 
 Log in and, upon authentication, perform any of the following operations on the user's contact list:
 - Create (add contact),
+  - Users can select the 'Add' tab in the top to display the form to add contacts. After filling out all fields, users can submit the form contents using the Submit button at the bottom.
 - Read (search contact list),
-- Update (update contact information), and 
+  - Users can select the 'Search' tab in the top to display the form to search contacts. Users can enter a first and last name to search in their contacts list. Any results matching first, last, and both names will be displayed in the contacts list panel to the right.
+- Update (update contact information),
+  - Users can select the button with the image of a person and a pencil to edit that contact. The button will open a modal for editing that particular contact.  After filling out all fields, users can submit the form contents using the Submit button at the bottom.
 - Delete (delete contact from list)
+  - Users can select the button with the image of a person and an x to edit that contact. The button will open a modal with a named prompt (ensuring selection of the correct contact) for deleting that particular contact. Users must provide their password to delete a contact, providing another layer of security against accidental deletions as well as third-party access.
 
 
 ## Contributors
