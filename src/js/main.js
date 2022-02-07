@@ -1,8 +1,8 @@
-const urlBase = "https://collectivecontacts.xyz/src/api/";
+const urlBase = "https://collectivecontacts.xyz/api/";
 const extension = ".php";
-//import { md5 } from './md5.js';
 
 async function doLogin() {
+    const endpoint = "/Login";
     const loginForm = document.querySelector("#login");
 
     let login = document.getElementById("username").value;
@@ -17,7 +17,7 @@ async function doLogin() {
     // document.getElementById("loginResult").innerHTML = "";
     setFormMessage(loginForm, "Success", "");
 
-    let url = urlBase + "Login" + extension;
+    let url = `${urlBase}${endpoint}${extension}`;
     let response = await requestHandler(url, body);
 
     // If response error exists then do something?
@@ -40,11 +40,12 @@ async function doLogin() {
 
     saveCookie();
 
-    window.location.replace("/src/html/contacts.html");
+    window.location.replace("html/contacts.html");
 }
 
 async function doSignUp() {
     userId = 0;
+    const endpoint = "/Registration";
 
     var firstname = document.getElementById("firstName").value;
     var lastname = document.getElementById("lastName").value;
@@ -60,19 +61,7 @@ async function doSignUp() {
     if (password == confirmPass) {
         document.getElementById("loginResult").innerHTML = "";
 
-        // "email": "TestEmail@Test.com",
-        // "password": "password123",
-        // "firstname": "Landon",
-        // "lastname": "Russell",
-        // "phone": "407-938-4910"
-
-        var json = { login: login, password: hash };
-
-        // translating
-
-        // console.log(jsonPayload);
-
-        var url = urlBase + "Registration" + extension;
+        let url = `${urlBase}${endpoint}${extension}`;
 
         let body = {
             firstName: firstname,
@@ -80,8 +69,7 @@ async function doSignUp() {
             password: hash,
             login,
         };
-
-        // console.log(url);
+        
         let response = await requestHandler(url, body);
 
         // TODO: show error for site and stop from auto-redirect
@@ -92,8 +80,6 @@ async function doSignUp() {
 
         userId = response.id;
 
-        // console.log(userId);
-
         localStorage.setItem("userIDInput", userId);
 
         localStorage.getItem("userIDInput");
@@ -102,8 +88,6 @@ async function doSignUp() {
         lastName = response.lastName;
 
         saveCookie();
-
-        setTimeout(() => (window.location.href = "/src/html/contacts.html"), 10 * 1000);
     } else {
         // make conf pass red
         document.getElementById("loginResult").innerHTML = "Passwords do not match";

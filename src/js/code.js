@@ -1,3 +1,6 @@
+const urlBase = "https://collectivecontacts.xyz/api/";
+const extension = ".php";
+
 let userId = 0;
 let firstName = "";
 let lastName = "";
@@ -5,8 +8,6 @@ let lastName = "";
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-        saveCookie();
-        getId();
         readCookie();
 
         document.getElementById("search-open").addEventListener("click", function () {
@@ -203,7 +204,7 @@ function addContact() {
     const endpoint = "/AddContact";
     const opOutput = document.getElementById("post_result");
     opOutput.innerHTML = "";
-    
+
     const url = `${urlBase}${endpoint}${extension}`;
 
     const fname = document.getElementById("add-fname").value;
