@@ -26,6 +26,8 @@ document.addEventListener(
             // Move cursor to first field
             document.getElementById("search-fname").focus();
         });
+        
+        document.getElementById('search-submit').addEventListener("click", searchContacts);
 
         document.getElementById("add-open").addEventListener("click", function () {
             // Indicate selection
@@ -43,6 +45,8 @@ document.addEventListener(
             // Move cursor to first field
             document.getElementById("add-fname").focus();
         });
+        
+        document.getElementById('add-submit').addEventListener("click", addContact);
 
         document.getElementById("edit-submit").addEventListener("click", function () {
             // Remove from display
