@@ -4,9 +4,13 @@
 
 Full-stack application using HTML, CSS, JS, PHP and mySQL. Application supports a login page and a user portal, where authenticated users can search for contacts in their remote contacts list. Contacts can be **C**reated, **R**ead, **U**pdated, and **D**eleted.
 
+---
+
 ## Motivation
 
 Created to satisfy the 'Small Project' group assignment for Prof. Rick Leinecker's COP4331 Processes of Object-Oriented Software during the Spring 2022 semester.
+
+---
 
 ## Technical Requirements
 Remote hosting is handled by [Digital Ocean](https://www.digitalocean.com/), where a single 'droplet' (Digital Ocean's smallest server-hosting size) was spun up with a [one-click LAMP stack](https://marketplace.digitalocean.com/apps/lamp).
@@ -20,6 +24,8 @@ The open-source Web server used for hosting the remote content
 The open-source <span title="Relational Database Management System">RDBMS</span><sup>*</sup> used for processing the data in the database
 ### **P**HP
 The open-source, server-sided scripting language used for processing backend computations
+
+---
 
 ## Repository overview
 ```
@@ -35,15 +41,19 @@ The open-source, server-sided scripting language used for processing backend com
         └── gifs
 ```
 
+---
+
 ## API Documentation
 
 API endpoints are documented at [SwaggerHub](https://app.swaggerhub.com/apis/COP4331_group23/COP4331_group23/1.0.0).
 
+---
+
 ## Technical Analysis
 ####  Design pattern for modal interaction:
-<div title="Justice">I</div> made the decision to "brand" opened edit and delete modals with data from the button responsible for opening them. I chose this approach because it seemed the simplest, though not the most orthogonal, implementation to complete.
+I(js) made the decision to "brand" opened edit and delete modals with data from the button responsible for opening them. I chose this approach because it seemed the simplest, though not the most orthogonal, implementation to complete.
 
-##### Detail
+#### Detail
 When a contact is created, the contacts list entry is composed of 4 text-based divs and 2 button divs. Those buttons are unique to that table entry, having been created with the database-unique contactId referencing that particular entry in the database.
 
 On click, both the edit and delete buttons set the contactId data attribute of whichever modal is being opened to the referenced contactId in the button. In such a way, the contactId data attribute is 'passed' to the next component along the user interaction cycle.
@@ -52,6 +62,8 @@ The current implementation simply overwrites the existing contactId data attribu
 
 #### Considerations for future maintenance based on existing design pattern:
 Because the modals don't reset or remove the contactId from the last click, there may arise future bugs in that system. I can't think of any breaking cases as of Feb7 but the area seems nebulous enough to me to warrant catalog.
+
+---
 
 ## Running instructions
 
@@ -67,6 +79,7 @@ Log in and, upon authentication, perform any of the following operations on the 
 - Delete (delete contact from list)
   - Users can select the button with the image of a person and an x to edit that contact. The button will open a modal with a named prompt (ensuring selection of the correct contact) for deleting that particular contact. Users must provide their password to delete a contact, providing another layer of security against accidental deletions as well as third-party access.
 
+---
 
 ## Contributors
 
