@@ -1,3 +1,4 @@
+<?php header('Access-Control-Allow-Origin: https://collectivecontacts.xyz');?>
 <?php
 
 	$inData = getRequestInfo();
