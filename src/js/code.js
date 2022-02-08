@@ -202,14 +202,7 @@ function addContact() {
 
     const responseBody = handleRequest(url, request);
 
-    console.log(JSON.stringify(responseBody));
-
-    if (responseBody.error == "") {
-        opOutput.textContent = "Contact added successfully.";
-    } else {
-        console.log(responseBody.error);
-        opOutput.textContent = "Could not add contact.";
-    }
+    console.log(responseBody);
 }
 
 function updateContact() {
@@ -260,13 +253,13 @@ function deleteContact() {
 
 async function handleRequest(url, request) {
     let response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(request),
-        });
-        
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+    });
+
     return await response.json();
 }
 
