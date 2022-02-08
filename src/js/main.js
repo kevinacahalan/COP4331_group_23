@@ -1,4 +1,4 @@
-const urlBase = "https://collectivecontacts.xyz/api/";
+const urlBase = "https://collectivecontacts.xyz/api";
 const extension = ".php";
 
 async function doLogin() {
