@@ -172,14 +172,14 @@ function searchContacts() {
 
     console.log(JSON.stringify(request));
 
-    const contacts = handleRequest(url, request);
-
-    if (contacts.length > 0) {
-        opOutput.textContent = "Contact(s) found!";
-        insertContacts(contacts);
-    } else {
-        opOutput.textContent = "No contact(s) matching search parameters found!";
-    }
+    handleRequest(url, request).then((data) => {
+        if (data.error == "") {
+            insertContacts(data.results);
+            opOutput.textContent = "Contact(s) found!";
+        } else {
+            opOutput.textContent = "No contact(s) matching search parameters found!";
+        }
+    });
 }
 
 function addContact() {
@@ -200,9 +200,14 @@ function addContact() {
 
     console.log(JSON.stringify(request));
 
-    const responseBody = handleRequest(url, request);
-
-    console.log(responseBody);
+    handleRequest(url, request).then((data) => {
+        if (data.error == "") {
+            opOutput.textContent = "Contact added successfully.";
+            document.getElementById("add-form").reset();
+        } else {
+            opOutput.textContent = "Unable to add contact.";
+        }
+    });
 }
 
 function updateContact() {
@@ -221,12 +226,14 @@ function updateContact() {
 
     console.log(JSON.stringify(request));
 
-    const responseBody = handleRequest(url, request);
-    if (responseBody.error === "") {
-        opOutput.textContent = "Update successful.";
-    } else {
-        opOutput.textContent = "Unable to update contact.";
-    }
+    handleRequest(url, request).then((data) => {
+        if (data.error == "") {
+            opOutput.textContent = "Contact updated successfully.";
+            document.getElementById("edit-form").reset();
+        } else {
+            opOutput.textContent = "Unable to update contact.";
+        }
+    });
 }
 
 function deleteContact() {
@@ -241,14 +248,15 @@ function deleteContact() {
 
     console.log(JSON.stringify(request));
 
-    const responseBody = handleRequest(url, request);
-    if (responseBody.error === "") {
-        const contactToDel = document.getElementById(`${contactId}`);
-        contactToDel.remove();
-        opOutput.innerText = "Contact deleted successfully.";
-    } else {
-        opOutput.textContent = "Unable to delete contact.";
-    }
+    handleRequest(url, request).then((data) => {
+        if (data.error == "") {
+            const contactToDel = document.getElementById(`${contactId}`);
+            contactToDel.remove();
+            opOutput.textContent = "Contact deleted successfully.";
+        } else {
+            opOutput.textContent = "Unable to delete contact.";
+        }
+    });
 }
 
 async function handleRequest(url, request) {
