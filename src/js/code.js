@@ -179,9 +179,10 @@ function searchContacts(contact) {
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     } else {
-        if (response.results.length > 0) {
+        const contacts = response.json();
+        if (contacts.length > 0) {
             opOutput.textContent = "Contact(s) found!";
-            insertContacts(response.results);
+            insertContacts(contacts);
         } else {
             opOutput.textContent = "No contact(s) matching search parameters found!";
         }
@@ -248,8 +249,8 @@ function deleteContact(contact) {
     }
 }
 
-function handleRequest(url, request) {
-    const response = fetch(url, {
+async function handleRequest(url, request) {
+    const response = await fetch(url, {
         method: "POST",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -257,7 +258,7 @@ function handleRequest(url, request) {
         body: request,
     });
     
-    return response.json();
+    return await response;
 }
 
 // Builds the elements to display in the contacts output table
