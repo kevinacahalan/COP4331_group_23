@@ -174,7 +174,7 @@ function searchContacts(contact) {
         lastName: contact.lastName,
     };
     
-    const response = requestHandler(url, request);
+    const response = handleRequest(url, request);
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -194,29 +194,18 @@ function addContact(contact) {
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-
-    const payload = {
+    const request = {
         userId: getId(),
         contact: contact
     };
+    
+    let response = handleRequest(url, request);
 
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
-        body: payload,
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
-                opOutput.textContent = "Contact added successfully.";
-            }
-        })
-        .catch((e) => {
-            console.log(`${e}`);
-        });
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+        opOutput.textContent = "Contact added successfully.";
+    }
 }
 
 function updateContact(contact) {
@@ -227,7 +216,7 @@ function updateContact(contact) {
     const url = `${urlBase}${endpoint}${extension}`;
     const request = contact;
     
-    const response = requestHandler(url, request)
+    const response = handleRequest(url, request)
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -248,7 +237,7 @@ function deleteContact(contact) {
         contactId: contact.contactId,
     };
 
-    const response = requestHandler(url, request);
+    const response = handleRequest(url, request);
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -259,7 +248,7 @@ function deleteContact(contact) {
     }
 }
 
-function requestHandler(url, request) {
+function handleRequest(url, request) {
     fetch(url, {
         method: "POST",
         headers: {
