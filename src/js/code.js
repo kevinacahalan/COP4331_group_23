@@ -249,19 +249,15 @@ function deleteContact(contact) {
 }
 
 function handleRequest(url, request) {
-    fetch(url, {
+    const response = fetch(url, {
         method: "POST",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
         body: request,
-    })
-        .then(function (response) {
-            return response;
-        })
-        .catch((e) => {
-            console.log(`${e}`);
-        });
+    });
+    
+    return response.json();
 }
 
 // Builds the elements to display in the contacts output table
