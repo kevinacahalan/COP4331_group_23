@@ -168,11 +168,7 @@ function searchContacts(contact) {
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = {
-        userId: getId(),
-        firstName: contact.firstName,
-        lastName: contact.lastName,
-    };
+    const request = contact.append('userId', getId());
 
     const response = handleRequest(url, request);
 
@@ -190,15 +186,13 @@ function searchContacts(contact) {
 }
 
 function addContact(contact) {
+    console.log(`addContact: ${contact}`)
     const endpoint = "/AddContact";
     const opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = {
-        userId: getId(),
-        contact: contact,
-    };
+    const request = contact.append('userId', getId());
 
     let response = handleRequest(url, request);
 
@@ -232,11 +226,7 @@ function deleteContact(contact) {
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = {
-        userId: getId(),
-        password: contact.password,
-        contactId: contact.contactId,
-    };
+    const request = contact.append('userId', getId());
 
     const response = handleRequest(url, request);
 
@@ -253,14 +243,11 @@ async function handleRequest(url, request) {
     try {
         const response = await fetch(url, {
             method: "POST",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
             body: request,
         }).catch((e) => {
             console.error("Error:", e);
         });
-        
+
         return await response;
     } catch (e) {
         console.error(e);
