@@ -46,7 +46,8 @@
                         id="search-modal"
                         class="h-1/2 flex-col justify-center items-center px-5 border-2 hidden"
                     >
-                        <form class="flex flex-col mb-4">
+                        <form id="search-form"
+                        class="flex flex-col mb-4">
                             <label for="fname" class="ml-3">First name:</label><br />
                             <input
                                 type="text"
@@ -63,23 +64,21 @@
                                 class="w-full border-2 mb-2"
                                 autocomplete="off"
                             /><br />
-                            <div class="w-full flex flex-row justify-center space-x-2">
-                                <button
-                                    id="search-submit"
-                                    class="button-4 focus:border-slate-800"
-                                    role="button"
-                                    type="submit"
-                                >
-                                    Search
-                                </button>
-                            </div>
+                            <button
+                                id="search-submit"
+                                class="button-4 focus:border-slate-800"
+                                role="button"
+                                type="submit"
+                            >
+                                Search
+                            </button>
                         </form>
                     </div>
                     <div
                         id="add-modal"
                         class="h-1/2 hidden flex-col justify-center items-center px-5 border-2 py-4"
                     >
-                        <form class="flex flex-col mb-4">
+                        <form id="add-form" class="flex flex-col mb-4">
                             <label for="fname" class="ml-3">First name:</label><br />
                             <input
                                 type="text"
@@ -116,16 +115,14 @@
                                 autocomplete="off"
                                 required
                             />
-                            <div class="w-full flex flex-row justify-center space-x-2">
-                                <button
-                                    id="add-submit"
-                                    class="button-4"
-                                    role="button"
-                                    type="submit"
-                                >
-                                    Add
-                                </button>
-                            </div>
+                            <button
+                                id="add-submit"
+                                class="button-4"
+                                role="button"
+                                type="submit"
+                            >
+                                Add
+                            </button>
                         </form>
                     </div>
                     <div id="post-result" class="h-full border-2"></div>
@@ -181,11 +178,9 @@
                     autocomplete="off"
                     required
                 />
-                <div class="w-full flex flex-row justify-center space-x-2">
-                    <button id="edit-submit" class="button-4" role="button" type="submit">
-                        Edit
-                    </button>
-                </div>
+                <button id="edit-submit" class="button-4" role="button" type="submit">
+                    Edit
+                </button>
             </form>
         </div>
         <!-- Delete Contact -->
