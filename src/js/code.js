@@ -250,17 +250,21 @@ function deleteContact(contact) {
 }
 
 async function handleRequest(url, request) {
-    const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
-        body: request,
-    }).catch((e) => {
-        console.error("Error:", e);
-    });
-
-    return await response;
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            body: request,
+        }).catch((e) => {
+            console.error("Error:", e);
+        });
+        
+        return await response;
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 // Builds the elements to display in the contacts output table
