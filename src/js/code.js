@@ -10,6 +10,44 @@ document.addEventListener(
     function () {
         readCookie();
 
+        document.getElementById("search-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            contact = new FormData(this);
+
+            searchContacts(contact);
+        });
+
+        document.getElementById("add-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            contact = new FormData(this);
+
+            addContact(contact);
+        });
+
+        document.getElementById("edit-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            contact = new FormData(this);
+            contact.append(document.getElementById('edit-modal').dataset.contactId);
+
+            updateContact(contact);
+            
+            this.reset();
+        });
+
+        document.getElementById("delete-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            contact = new FormData(this);
+            contact.append('contactId', document.getElementById("delete-modal").dataset.contactId);
+
+            deleteContact(contact);
+            
+            this.reset();
+        });
+
         document.getElementById("search-open").addEventListener("click", function () {
             // Indicate selection
             this.classList.add("border-slate-400");
@@ -25,11 +63,6 @@ document.addEventListener(
 
             // Move cursor to first field
             document.getElementById("search-fname").focus();
-        });
-        
-        document.getElementById('search-submit').addEventListener("click", function(e) {
-            e.preventDefault();
-            searchContacts();
         });
 
         document.getElementById("add-open").addEventListener("click", function () {
@@ -48,63 +81,15 @@ document.addEventListener(
             // Move cursor to first field
             document.getElementById("add-fname").focus();
         });
-        
-        document.getElementById('add-submit').addEventListener("click", function(e) {
-            e.preventDefault();
-            addContact();
-        });
 
-        document.getElementById("edit-submit").addEventListener("click", function (e) {
-            e.preventDefault();
-            
-            // Remove from display
-            document.getElementById("edit-modal").classList.add("hidden");
-
-            // Build payload from fields (completion ensured with 'required' attribute)
-            let contact = {
-                firstName: document.getElementById("edit-fname").textContent,
-                lastName: document.getElementById("edit-lname").textContent,
-                email: document.getElementById("edit-email").textContent,
-                phoneNumber: document.getElementById("edit-phone").textContent,
-                contactId: this.dataset.contactId,
-            };
-
-            // Process request
-            updateContact(contact);
-
-            // Reset fields
-            document.getElementById("edit-fname").reset();
-            document.getElementById("edit-lname").reset();
-            document.getElementById("edit-email").reset();
-            document.getElementById("edit-phone").reset();
-        });
+        // edit-open and delete-open eventListeners are linked dynamically in buildContact(contact) at runtime.
 
         document.getElementById("edit-close").addEventListener("click", function () {
             // Remove from display
             document.getElementById("edit-modal").classList.add("hidden");
 
             // Reset dynamic fields
-            document.getElementById("edit-fname").reset();
-            document.getElementById("edit-lname").reset();
-            document.getElementById("edit-email").reset();
-            document.getElementById("edit-phone").reset();
-        });
-
-        document.getElementById("delete-submit").addEventListener("click", function () {
-            e.preventDefault();
-            
-            // Remove from display
-            document.getElementById("delete-modal").classList.add("hidden");
-
-            // Process fields
-            const pwd = document.getElementById("delete-password").textContent;
-            const contactId = document.getElementById("delete-modal").dataset.contactId;
-
-            deleteContact(contactId, md5(pwd));
-
-            // Reset dynamic fields
-            document.getElementById("delete-prompt").reset();
-            document.getElementById("delete-password").reset();
+            document.getElementById("edit-form").reset();
         });
 
         document.getElementById("delete-close").addEventListener("click", function () {
@@ -118,10 +103,10 @@ document.addEventListener(
     false
 );
 
-function insertContact(contacts) {
-    let contactList = document.getElementById("contacts-list");
+function insertContacts(contacts) {
+    let contactsList = document.getElementById("contacts-list");
 
-    contacts.forEach((el) => contactList.append(buildContact(el)));
+    contacts.forEach((el) => contactsList.append(buildContactElement(el)));
 }
 
 function doLogout() {
@@ -177,63 +162,42 @@ function readCookie() {
     }
 }
 
-function searchContacts() {
+function searchContacts(contact) {
     const endpoint = "/SearchContacts";
     let opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-
-    const jsonPayload = {
+    const request = {
         userId: getId(),
-        firstName: document.getElementById("search-fname").textContent,
-        lastName: document.getElementById("search-lname").textContent,
+        firstName: contact.firstName,
+        lastName: contact.lastName,
     };
-
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
-        body: jsonPayload,
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
-                if (response.results.length > 0) {
-                    opOutput.textContent = "Contact(s) found!";
-                    insertContacts(response.results);
-                } else {
-                    opOutput.textContent = "No contact(s) matching search parameters found!";
-                }
-            }
-        })
-        .catch((e) => {
-            console.log(`${e}`);
-        });
+    
+    const response = requestHandler(url, request);
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+        if (response.results.length > 0) {
+            opOutput.textContent = "Contact(s) found!";
+            insertContacts(response.results);
+        } else {
+            opOutput.textContent = "No contact(s) matching search parameters found!";
+        }
+    }
 }
 
-function addContact() {
+function addContact(contact) {
     const endpoint = "/AddContact";
     const opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
 
-    const fname = document.getElementById("add-fname").textContent;
-    const lname = document.getElementById("add-lname").textContent;
-    const email = document.getElementById("add-email").textContent;
-    const phone = document.getElementById("add-phone").textContent;
-
-    const jsonPayload = {
+    const payload = {
         userId: getId(),
-        contact: {
-            firstName: fname,
-            lastName: lname,
-            email: email,
-            phoneNumber: phone,
-        },
+        contact: contact
     };
 
     fetch(url, {
@@ -241,7 +205,7 @@ function addContact() {
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
-        body: jsonPayload,
+        body: payload,
     })
         .then(function (response) {
             if (!response.ok) {
@@ -255,66 +219,56 @@ function addContact() {
         });
 }
 
-function updateContact() {
+function updateContact(contact) {
     const endpoint = "/Update";
     const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-
-    const contact = {
-        firstName: document.getElementById("edit-fname").textContent,
-        lastName: document.getElementById("edit-lname").textContent,
-        email: document.getElementById("edit-email").textContent,
-        phoneNumber: document.getElementById("edit-phone").textContent,
-        contactId: document.getElementById("edit-modal").dataset.contactId,
-    };
-
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
-        body: contact,
-    })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
-                opOutput.innerText = "Contact updated successfully.";
-            }
-        })
-        .catch((e) => {
-            console.log(`${e}`);
-        });
+    const request = contact;
+    
+    const response = requestHandler(url, request)
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+        opOutput.innerText = "Contact updated successfully.";
+    }
 }
 
-function deleteContact() {
+function deleteContact(contact) {
     const endpoint = "/Delete";
     const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-
-    const contact = {
+    const request = {
         userId: getId(),
-        password: document.getElementById("delete-password").textContent,
-        contactId: document.getElementById("delete-modal").dataset.contactId,
+        password: contact.password,
+        contactId: contact.contactId,
     };
 
+    const response = requestHandler(url, request);
+    
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+        const contactToDel = document.getElementById(`${contactId}`);
+        contactToDel.remove();
+        opOutput.innerText = "Contact deleted successfully.";
+    }
+}
+
+function requestHandler(url, request) {
     fetch(url, {
         method: "POST",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
-        body: contact,
+        body: request,
     })
         .then(function (response) {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
-                opOutput.innerText = "Contact deleted successfully.";
-            }
+            return response;
         })
         .catch((e) => {
             console.log(`${e}`);
@@ -322,8 +276,9 @@ function deleteContact() {
 }
 
 // Builds the elements to display in the contacts output table
-function buildContact(contact) {
+function buildContactElement(contact) {
     let newContact = document.createElement("div");
+    newContact.id = `${contact.contactId}`;
     newContact.classList.add(
         "text-center",
         "w-full",
@@ -357,8 +312,8 @@ function buildContact(contact) {
     phone.innerText = `${contact.phoneNumber}`;
     phone.id = `${contact.contactId}-phone`;
     phone.classList.add("w-full");
-
     newContact.append(phone);
+
     newContact.setAttribute("data-contactId", contact.contactId);
 
     // Create Edit button
