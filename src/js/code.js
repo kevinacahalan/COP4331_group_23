@@ -13,26 +13,23 @@ document.addEventListener(
         document.getElementById("search-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            contact = new FormData(this);
+            searchContacts();
 
-            searchContacts(contact);
+            this.reset();
         });
 
         document.getElementById("add-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            contact = new FormData(this);
+            addContact();
 
-            addContact(contact);
+            this.reset();
         });
 
         document.getElementById("edit-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            contact = new FormData(this);
-            contact.append(document.getElementById("edit-modal").dataset.contactId);
-
-            updateContact(contact);
+            updateContact();
 
             this.reset();
         });
@@ -40,10 +37,7 @@ document.addEventListener(
         document.getElementById("delete-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            contact = new FormData(this);
-            contact.append("contactId", document.getElementById("delete-modal").dataset.contactId);
-
-            deleteContact(contact);
+            deleteContact();
 
             this.reset();
         });
@@ -60,6 +54,7 @@ document.addEventListener(
 
             // Remove additional states from display
             document.getElementById("add-modal").classList.add("hidden");
+            document.getElementById("post-result").textContent = "";
 
             // Move cursor to first field
             document.getElementById("search-fname").focus();
@@ -77,6 +72,7 @@ document.addEventListener(
 
             // Remove additional states from display
             document.getElementById("search-modal").classList.add("hidden");
+            document.getElementById("post-result").textContent = "";
 
             // Move cursor to first field
             document.getElementById("add-fname").focus();
@@ -162,93 +158,119 @@ function readCookie() {
     }
 }
 
-function searchContacts(contact) {
+function searchContacts() {
     const endpoint = "/SearchContacts";
     let opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = contact.append('userId', getId());
+    const request = {
+        firstName: document.getElementById("search-fname").value,
+        lastName: document.getElementById("search-lname").value,
+        userId: getId(),
+    };
 
-    const response = handleRequest(url, request);
+    console.log(JSON.stringify(request));
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const contacts = handleRequest(url, request);
+
+    if (contacts.length > 0) {
+        opOutput.textContent = "Contact(s) found!";
+        insertContacts(contacts);
     } else {
-        const contacts = response.json();
-        if (contacts.length > 0) {
-            opOutput.textContent = "Contact(s) found!";
-            insertContacts(contacts);
-        } else {
-            opOutput.textContent = "No contact(s) matching search parameters found!";
-        }
+        opOutput.textContent = "No contact(s) matching search parameters found!";
     }
 }
 
-function addContact(contact) {
-    console.log(`addContact: ${contact}`)
+function addContact() {
     const endpoint = "/AddContact";
     const opOutput = document.getElementById("post-result");
     opOutput.innerHTML = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = contact.append('userId', getId());
+    const request = {
+        userId: getId(),
+        contact: {
+            firstName: document.getElementById("add-fname").value,
+            lastName: document.getElementById("add-lname").value,
+            email: document.getElementById("add-email").value,
+            phoneNumber: document.getElementById("add-phone").value
+        }
+    };
 
-    let response = handleRequest(url, request);
+    console.log(JSON.stringify(request));
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
+    const responseBody = handleRequest(url, request);
+
+    if (responseBody.error === "") {
         opOutput.textContent = "Contact added successfully.";
+    } else {
+        opOutput.textContent = "Unable to add contact.";
     }
 }
 
-function updateContact(contact) {
+function updateContact() {
     const endpoint = "/Update";
     const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = contact;
+    const request = {
+        firstName: document.getElementById("edit-fname").value,
+        lastName: document.getElementById("edit-lname").value,
+        email: document.getElementById("edit-email").value,
+        phoneNumber: document.getElementById("edit-phone").value,
+        contactId: document.getElementById("edit-modal").dataset.contactId,
+    };
+    
+    console.log(JSON.stringify(request));
 
-    const response = handleRequest(url, request);
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const responseBody = handleRequest(url, request);
+    if (responseBody.error === "") {
+        opOutput.textContent = "Update successful.";
     } else {
-        opOutput.innerText = "Contact updated successfully.";
+        opOutput.textContent = "Unable to update contact.";
     }
 }
 
-function deleteContact(contact) {
+function deleteContact() {
     const endpoint = "/Delete";
     const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = contact.append('userId', getId());
+    const request = {
+        contactId: document.getElementById("delete-modal").dataset.contactId,
+    };
+    
+    console.log(JSON.stringify(request));
 
-    const response = handleRequest(url, request);
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    } else {
+    const responseBody = handleRequest(url, request);
+    if (responseBody.error === "") {
         const contactToDel = document.getElementById(`${contactId}`);
         contactToDel.remove();
         opOutput.innerText = "Contact deleted successfully.";
+    } else {
+        opOutput.textContent = "Unable to delete contact.";
     }
 }
 
 async function handleRequest(url, request) {
     try {
-        const response = await fetch(url, {
+        fetch(url, {
             method: "POST",
             body: request,
-        }).catch((e) => {
-            console.error("Error:", e);
-        });
-
-        return await response;
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else {
+                    return response.json();
+                }
+            })
+            .catch((e) => {
+                console.error("Error:", e);
+            });
     } catch (e) {
         console.error(e);
     }
