@@ -114,7 +114,7 @@ function doLogout() {
 }
 
 function getId() {
-    const id = document.cookie.split("=")[3];
+    const id = document.cookie.split("=")[3].split(";")[0];
     if (!document.cookie || !id) {
         return new Error("getID error: invalid cookie");
     }
