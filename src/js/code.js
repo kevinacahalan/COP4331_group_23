@@ -93,7 +93,7 @@ document.addEventListener(
             document.getElementById("delete-modal").classList.add("hidden");
 
             // Reset dynamic fields
-            document.getElementById("delete-prompt").reset();
+            document.getElementById("delete-prompt").textContent = "";
         });
     },
     false
