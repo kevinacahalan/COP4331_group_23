@@ -201,11 +201,10 @@ function addContact() {
     console.log(JSON.stringify(request));
 
     const responseBody = handleRequest(url, request);
-
     if (responseBody.error === "") {
         opOutput.textContent = "Contact added successfully.";
     } else {
-        opOutput.textContent = "Unable to add contact.";
+        opOutput.textContent = "Could not add contact.";
     }
 }
 
@@ -259,6 +258,9 @@ async function handleRequest(url, request) {
     try {
         fetch(url, {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: request,
         })
             .then((response) => {
