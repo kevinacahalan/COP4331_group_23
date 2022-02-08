@@ -195,15 +195,19 @@ function addContact() {
             lastName: document.getElementById("add-lname").value,
             email: document.getElementById("add-email").value,
             phoneNumber: document.getElementById("add-phone").value
-        }
+        },
     };
 
     console.log(JSON.stringify(request));
 
     const responseBody = handleRequest(url, request);
-    if (responseBody.error === "") {
+
+    console.log(JSON.stringify(responseBody));
+
+    if (responseBody.error == "") {
         opOutput.textContent = "Contact added successfully.";
     } else {
+        console.log(responseBody.error);
         opOutput.textContent = "Could not add contact.";
     }
 }
@@ -221,7 +225,7 @@ function updateContact() {
         phoneNumber: document.getElementById("edit-phone").value,
         contactId: document.getElementById("edit-modal").dataset.contactId,
     };
-    
+
     console.log(JSON.stringify(request));
 
     const responseBody = handleRequest(url, request);
@@ -241,7 +245,7 @@ function deleteContact() {
     const request = {
         contactId: document.getElementById("delete-modal").dataset.contactId,
     };
-    
+
     console.log(JSON.stringify(request));
 
     const responseBody = handleRequest(url, request);
@@ -256,25 +260,16 @@ function deleteContact() {
 
 async function handleRequest(url, request) {
     try {
-        fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: request,
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                } else {
-                    return response.json();
-                }
-            })
-            .catch((e) => {
-                console.error("Error:", e);
+        let response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: request,
             });
-    } catch (e) {
-        console.error(e);
+        return response.json();
+    } catch (error) {
+        console.log(error);
     }
 }
 
