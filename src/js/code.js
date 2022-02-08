@@ -30,10 +30,10 @@ document.addEventListener(
             e.preventDefault();
 
             contact = new FormData(this);
-            contact.append(document.getElementById('edit-modal').dataset.contactId);
+            contact.append(document.getElementById("edit-modal").dataset.contactId);
 
             updateContact(contact);
-            
+
             this.reset();
         });
 
@@ -41,10 +41,10 @@ document.addEventListener(
             e.preventDefault();
 
             contact = new FormData(this);
-            contact.append('contactId', document.getElementById("delete-modal").dataset.contactId);
+            contact.append("contactId", document.getElementById("delete-modal").dataset.contactId);
 
             deleteContact(contact);
-            
+
             this.reset();
         });
 
@@ -173,9 +173,9 @@ function searchContacts(contact) {
         firstName: contact.firstName,
         lastName: contact.lastName,
     };
-    
+
     const response = handleRequest(url, request);
-    
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     } else {
@@ -197,9 +197,9 @@ function addContact(contact) {
     const url = `${urlBase}${endpoint}${extension}`;
     const request = {
         userId: getId(),
-        contact: contact
+        contact: contact,
     };
-    
+
     let response = handleRequest(url, request);
 
     if (!response.ok) {
@@ -216,9 +216,9 @@ function updateContact(contact) {
 
     const url = `${urlBase}${endpoint}${extension}`;
     const request = contact;
-    
-    const response = handleRequest(url, request)
-    
+
+    const response = handleRequest(url, request);
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     } else {
@@ -239,7 +239,7 @@ function deleteContact(contact) {
     };
 
     const response = handleRequest(url, request);
-    
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     } else {
@@ -256,8 +256,10 @@ async function handleRequest(url, request) {
             "Content-type": "application/json; charset=UTF-8",
         },
         body: request,
+    }).catch((e) => {
+        console.error("Error:", e);
     });
-    
+
     return await response;
 }
 
