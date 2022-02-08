@@ -194,7 +194,7 @@ function addContact() {
             firstName: document.getElementById("add-fname").value,
             lastName: document.getElementById("add-lname").value,
             email: document.getElementById("add-email").value,
-            phoneNumber: document.getElementById("add-phone").value
+            phoneNumber: document.getElementById("add-phone").value,
         },
     };
 
@@ -259,18 +259,15 @@ function deleteContact() {
 }
 
 async function handleRequest(url, request) {
-    try {
-        let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: request,
-            });
-        return response.json();
-    } catch (error) {
-        console.log(error);
-    }
+    let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        });
+        
+    return await response.json();
 }
 
 // Builds the elements to display in the contacts output table
