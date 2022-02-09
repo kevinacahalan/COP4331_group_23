@@ -17,6 +17,7 @@ header('Access-Control-Allow-Headers: *');
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
+		returnNoError();
 	}
 
 	function getRequestInfo()
@@ -34,6 +35,12 @@ header('Access-Control-Allow-Headers: *');
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
+	}
+
+	function returnNoError()
+	{
+		$retValue = '{"error":""}';
+		sendResultInfoAsJson($retValue);
 	}
 	
 	
