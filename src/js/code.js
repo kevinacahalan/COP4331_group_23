@@ -56,6 +56,11 @@ function dragElement(elmnt) {
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
+        document.getElementById("edit-container").classList.replace("foreground", "background");
+        document.getElementById("add-container").classList.replace("foreground", "background");
+        document.getElementById("search-container").classList.replace("foreground", "background");
+        document.getElementById("contacts-container").classList.replace("foreground", "background");
+        elmnt.classList.replace("background", "foreground");
         // get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
