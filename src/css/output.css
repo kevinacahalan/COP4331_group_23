@@ -514,6 +514,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.5rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .flex {
   display: flex;
 }
@@ -538,12 +542,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   min-height: 100vh;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-96 {
   width: 24rem;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .max-w-xs {
@@ -699,6 +703,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   text-align: center;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 6px;
+}
+
+.two-corners {
+  border-radius: 6px 0;
 }
 
 .even\:bg-slate-100:nth-child(even) {
