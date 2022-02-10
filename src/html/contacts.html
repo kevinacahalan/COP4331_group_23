@@ -14,9 +14,11 @@
         <div class="mr-10">
             <div
                 id="search-container"
-                class="w-96 bg-white two-corners px-4 py-2 mb-5 drop-shadow-xl"
+                class="w-96 bg-white two-corners px-4 py-2 mb-5 drop-shadow-xl draggable"
             >
-                <div class="w-full text-center text-lg border-b-2">Search Contacts</div>
+                <div id="search-container-header" class="w-full text-center text-lg border-b-2 cursor-move">
+                    Search Contacts
+                </div>
                 <!-- Search form -->
                 <div class="py-4 border-b-2 flex flex-row">
                     <input id="search" type="text" name="search" class="input-1" />
@@ -30,8 +32,10 @@
                 </div>
                 <div id="search-post-result"></div>
             </div>
-            <div id="add-container" class="w-96 bg-white two-corners px-4 py-2 drop-shadow-xl">
-                <div class="w-full text-center text-lg border-b-2 px-4">Add Contact</div>
+            <div id="add-container" class="w-96 bg-white two-corners px-4 py-2 drop-shadow-xl draggable">
+                <div id="add-container-header" class="w-full text-center text-lg border-b-2 px-4 cursor-move">
+                    Add Contact
+                </div>
                 <!-- Add form -->
                 <div class="py-4 border-b-2 flex flex-col items-center">
                     <input
@@ -74,7 +78,7 @@
             </div>
         </div>
         <!-- Table -->
-        <div class="flex flex-col items-end drop-shadow-xl mr-10 w-96">
+        <div id="contacts-container" class="flex flex-col items-end drop-shadow-xl mr-10 w-96 draggable">
             <div class="flex flex-row justify-content items-center bg-white px-4 pt-2 rounded-t-md">
                 <div id="username-display" class="mr-2"></div>
                 <button
@@ -87,8 +91,8 @@
             </div>
             <div class="bg-white h-96 w-full two-corners">
                 <div
-                    id="contacts-header"
-                    class="text-center text-xl py-2 border-b-2 border-slate-200"
+                    id="contacts-container-header"
+                    class="text-center text-xl py-2 border-b-2 border-slate-200 cursor-move"
                 >
                     Contacts
                 </div>
@@ -101,9 +105,11 @@
         <!-- edit-modal -->
         <div
             id="edit-container"
-            class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners"
+            class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners draggable"
         >
-            <div class="w-full text-center text-lg border-b-2 px-4">Edit Contact</div>
+            <div id="edit-container-header" class="w-full text-center text-lg border-b-2 px-4 cursor-move">
+                Edit Contact
+            </div>
             <!-- Edit form -->
             <div class="py-4 border-b-2 flex flex-col items-center">
                 <input

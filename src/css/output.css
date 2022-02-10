@@ -514,10 +514,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: 0.5rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
 .flex {
   display: flex;
 }
@@ -552,6 +548,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .max-w-xs {
   max-width: 20rem;
+}
+
+.cursor-move {
+  cursor: move;
 }
 
 .flex-row {
@@ -672,6 +672,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin: 0;
   padding: 0;
   box-sizing: border;
+}
+
+.draggable {
+  position: absolute;
 }
 
 .input-1 {
