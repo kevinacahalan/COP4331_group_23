@@ -10,90 +10,25 @@ document.addEventListener(
     function () {
         readCookie();
 
-        document.getElementById("search-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
+        document.getElementById("search-submit").addEventListener("click", function (e) {
+            console.log(document.getElementById("search").value);
             searchContacts();
 
-            this.reset();
+            document.getElementById("search").value = "";
         });
 
-        document.getElementById("add-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
+        document.getElementById("add-submit").addEventListener("click", function (e) {
+            console.log(document.getElementById("add-fname").value);
             addContact();
 
-            this.reset();
+            document.getElementById("add-fname").value = "";
+            document.getElementById("add-lname").value = "";
+            document.getElementById("add-email").value = "";
+            document.getElementById("add-phone").value = "";
         });
 
-        document.getElementById("edit-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            updateContact();
-
-            this.reset();
-        });
-
-        document.getElementById("delete-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            deleteContact();
-
-            this.reset();
-        });
-
-        document.getElementById("search-open").addEventListener("click", function () {
-            // Indicate selection
-            this.classList.add("border-slate-400");
-
-            // Reset additional states to inactive
-            document.getElementById("add-open").classList.remove("border-slate-400");
-
-            // Add to display
-            document.getElementById("search-modal").classList.replace("hidden", "flex");
-
-            // Remove additional states from display
-            document.getElementById("add-modal").classList.add("hidden");
-            document.getElementById("post-result").textContent = "";
-
-            // Move cursor to first field
-            document.getElementById("search-fname").focus();
-        });
-
-        document.getElementById("add-open").addEventListener("click", function () {
-            // Indicate selection
-            this.classList.add("border-slate-400");
-
-            // Reset additional states to inactive
-            document.getElementById("search-open").classList.remove("border-slate-400");
-
-            // Add to display
-            document.getElementById("add-modal").classList.replace("hidden", "flex");
-
-            // Remove additional states from display
-            document.getElementById("search-modal").classList.add("hidden");
-            document.getElementById("post-result").textContent = "";
-
-            // Move cursor to first field
-            document.getElementById("add-fname").focus();
-        });
-
-        // edit-open and delete-open eventListeners are linked dynamically in buildContact(contact) at runtime.
-
-        document.getElementById("edit-close").addEventListener("click", function () {
-            // Remove from display
-            document.getElementById("edit-modal").classList.add("hidden");
-
-            // Reset dynamic fields
-            document.getElementById("edit-form").reset();
-        });
-
-        document.getElementById("delete-close").addEventListener("click", function () {
-            // Remove from display
-            document.getElementById("delete-modal").classList.add("hidden");
-
-            // Reset dynamic fields
-            document.getElementById("delete-prompt").textContent = "";
+        document.getElementById("edit-submit").addEventListener("click", function (e) {
+            updateContacts();
         });
     },
     false
@@ -154,21 +89,22 @@ function readCookie() {
     if (userId < 0) {
         window.location.replace("../index.html");
     } else {
-        document.getElementById("username-display").innerHTML = `${firstName} ${lastName}`;
+        document.getElementById(
+            "username-display"
+        ).innerHTML = `Logged in as ${firstName} ${lastName}`;
     }
 }
 
 function searchContacts() {
     const endpoint = "/SearchContacts";
-    let opOutput = document.getElementById("post-result");
-    opOutput.innerHTML = "";
+    let opOutput = document.getElementById("search-post-result");
+    opOutput.value = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = {
-        firstName: document.getElementById("search-fname").value,
-        lastName: document.getElementById("search-lname").value,
+    const request = JSON.stringify({
+        search: document.getElementById("search").value,
         userId: getId(),
-    };
+    });
 
     console.log(JSON.stringify(request));
 
@@ -184,11 +120,11 @@ function searchContacts() {
 
 function addContact() {
     const endpoint = "/AddContact";
-    const opOutput = document.getElementById("post-result");
-    opOutput.innerHTML = "";
+    const opOutput = document.getElementById("add-post-result");
+    opOutput.value = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = {
+    const request = JSON.stringify({
         userId: getId(),
         contact: {
             firstName: document.getElementById("add-fname").value,
@@ -196,16 +132,15 @@ function addContact() {
             email: document.getElementById("add-email").value,
             phoneNumber: document.getElementById("add-phone").value,
         },
-    };
+    });
 
     console.log(JSON.stringify(request));
 
     handleRequest(url, request).then((data) => {
         if (data.error == "") {
-            opOutput.textContent = "Contact added successfully.";
-            document.getElementById("add-form").reset();
+            opOutput.value = "Contact added successfully.";
         } else {
-            opOutput.textContent = "Unable to add contact.";
+            opOutput.value = "Unable to add contact.";
         }
     });
 }
@@ -221,7 +156,7 @@ function updateContact() {
         lastName: document.getElementById("edit-lname").value,
         email: document.getElementById("edit-email").value,
         phoneNumber: document.getElementById("edit-phone").value,
-        contactId: document.getElementById("edit-modal").dataset.contactId,
+        contactId: document.getElementById("edit-container").dataset.contactId,
     };
 
     console.log(JSON.stringify(request));
@@ -229,30 +164,36 @@ function updateContact() {
     handleRequest(url, request).then((data) => {
         if (data.error == "") {
             opOutput.textContent = "Contact updated successfully.";
-            document.getElementById("edit-form").reset();
+            document.getElementById("edit-fname").value = "";
+            document.getElementById("edit-lname").value = "";
+            document.getElementById("edit-email").value = "";
+            document.getElementById("edit-phone").value = "";
         } else {
             opOutput.textContent = "Unable to update contact.";
         }
     });
 }
 
-function deleteContact() {
+function deleteContact(id) {
     const endpoint = "/Delete";
     const opOutput = document.getElementById("post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
     const request = {
-        contactId: document.getElementById("delete-modal").dataset.contactId,
+        contactId: id,
     };
 
     console.log(JSON.stringify(request));
 
     handleRequest(url, request).then((data) => {
         if (data.error == "") {
-            const contactToDel = document.getElementById(`${contactId}`);
-            contactToDel.remove();
             opOutput.textContent = "Contact deleted successfully.";
+            if (
+                document.getElementById("contacts-list").contains(document.getElementById(`${id}`))
+            ) {
+                document.getElementById(`${id}`).remove();
+            }
         } else {
             opOutput.textContent = "Unable to delete contact.";
         }
@@ -265,7 +206,7 @@ async function handleRequest(url, request) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(request),
+        body: request,
     });
 
     return await response.json();
@@ -281,36 +222,11 @@ function buildContactElement(contact) {
         "flex",
         "flex-row",
         "justify-center",
+        "items-center",
         "even:bg-slate-100"
     );
 
-    newContact.style.justifyContent = "space-between";
-
-    const fname = document.createElement("div");
-    fname.innerHTML = `${contact.firstName}`;
-    fname.id = `${contact.contactId}-fname`;
-    fname.classList.add("w-full");
-    newContact.append(fname);
-
-    const lname = document.createElement("div");
-    lname.innerText = `${contact.lastName}`;
-    lname.id = `${contact.contactId}-lname`;
-    lname.classList.add("w-full");
-    newContact.append(lname);
-
-    const email = document.createElement("div");
-    email.innerText = `${contact.email}`;
-    email.id = `${contact.contactId}-email`;
-    email.classList.add("w-full");
-    newContact.append(email);
-
-    const phone = document.createElement("div");
-    phone.innerText = `${contact.phoneNumber}`;
-    phone.id = `${contact.contactId}-phone`;
-    phone.classList.add("w-full");
-    newContact.append(phone);
-
-    newContact.setAttribute("data-contactId", contact.contactId);
+    div.innerText = `${contact.firstName} ${contact.lastName} ${contact.email} ${contact.phoneNumber}`;
 
     // Create Edit button
     const editButton = document.createElement("button");
@@ -323,9 +239,12 @@ function buildContactElement(contact) {
     editButton.setAttribute("data-contactId", contact.contactId);
     editButton.id = "edit-open";
     editButton.addEventListener("click", function () {
-        document.getElementById("edit-form").reset();
-        const editModal = document.getElementById("edit-modal");
+        const editModal = document.getElementById("edit-container");
         editModal.setAttribute("data-contactId", contact.contactId);
+        document.getElementsById("edit-fname").placeholder = contact.firstName;
+        document.getElementsById("edit-lname").placeholder = contact.lastName;
+        document.getElementsById("edit-email").placeholder = contact.email;
+        document.getElementsById("edit-phone").placeholder = contact.phoneNumber;
         editModal.classList.replace("hidden", "flex");
         document.getElementById("edit-fname").focus();
     });
@@ -336,20 +255,10 @@ function buildContactElement(contact) {
     deleteIcon.classList.add("fas", "fa-user-times");
     deleteButton.append(deleteIcon);
     deleteButton.classList.add("flex", "items-center", "px-2");
-    deleteButton.setAttribute("data-contactId", contact.contactId);
-    deleteButton.id = "delete-open";
     deleteButton.addEventListener("click", function () {
-        document.getElementById("delete-form").reset();
-        const fname = document.getElementById(`${this.dataset.contactid}-fname`).innerText;
-        const lname = document.getElementById(`${this.dataset.contactid}-lname`).innerText;
-
-        const prompt = `Deleting ${fname} ${lname}`;
-
-        document.getElementById("delete-prompt").textContent = prompt;
-        const deleteModal = document.getElementById("delete-modal");
-        deleteModal.setAttribute("data-contactId", contact.contactId);
-        deleteModal.classList.remove("hidden");
-        document.getElementById("delete-password").focus();
+        if (confirm(`Delete ${contact.firstName} ${contact.lastName}?`)) {
+            deleteContact(contact.contactId);
+        }
     });
 
     // Add both buttons to contact object

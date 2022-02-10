@@ -1,212 +1,141 @@
 <!DOCTYPE html>
-<html lang="en" class="w-screen h-screen box-border">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Contacts</title>
+        <title>Collective Contacts</title>
         <link rel="stylesheet" href="../css/output.css" />
         <script src="https://kit.fontawesome.com/d06c39017a.js" crossorigin="anonymous"></script>
         <script src="../js/code.js"></script>
     </head>
-    <body class="flex flex-col justify-center items-center w-full h-full bg-blue-500 relative">
-        <!-- Main content panel -->
-        <div class="w-full h-full bg-white mx-auto border-box shadow-2xl border-slate-500 border-2">
-            <!-- Header Content -->
-            <div class="flex flex-row px-2 py-2 justify-center items-center gap-x-6 relative">
-                <div class="ml-28 text-4xl">Contacts</div>
-                <div id="username-display" class="absolute right-0 mr-12"></div>
+    <body class="min-h-screen bg-blue-500 flex flex-row justify-center items-center">
+        <!-- Operations -->
+        <div class="mr-10">
+            <div id="search-container" class="bg-white rounded-lg px-4 py-2 mb-5 drop-shadow-xl">
+                <div class="w-full text-center text-lg border-b-2">Search Contacts</div>
+                <!-- Search form -->
+                <div class="py-4 border-b-2 flex flex-row">
+                    <input id="search" type="text" name="search" class="input-1" />
+                    <button
+                        id="search-submit"
+                        type="button"
+                        class="button-1 rounded-lg bg-slate-200 hover:bg-slate-300"
+                    >
+                        Submit
+                    </button>
+                </div>
+                <div id="search-post-result"></div>
+            </div>
+            <div id="add-container" class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl">
+                <div class="w-full text-center text-lg border-b-2 px-4">Add Contact</div>
+                <!-- Add form -->
+                <div class="py-4 border-b-2 flex flex-col items-center">
+                    <input
+                        id="add-fname"
+                        type="text"
+                        name="firstName"
+                        placeholder="First name"
+                        class="input-1"
+                    />
+                    <input
+                        id="add-lname"
+                        type="text"
+                        name="lastName"
+                        placeholder="Last name"
+                        class="input-1"
+                    />
+                    <input
+                        id="add-email"
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        class="input-1"
+                    />
+                    <input
+                        id="add-phone"
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone Number"
+                        class="input-1"
+                    />
+                    <button
+                        id="add-submit"
+                        type="button"
+                        class="button-1 rounded-lg bg-slate-200 hover:bg-slate-300"
+                    >
+                        Submit
+                    </button>
+                </div>
+                <div id="add-post-result"></div>
+            </div>
+        </div>
+        <!-- Table -->
+        <div class="flex flex-col items-end drop-shadow-xl mr-10 w-96">
+            <div class="flex flex-row justify-content items-center bg-white px-4 pt-2 rounded-t-md">
+                <div id="username-display" class="mr-2"></div>
                 <button
-                    class="absolute right-0 mr-4 hover:border-2 px-1 hover:rounded-xl"
+                    type="button"
                     onclick="doLogout()"
+                    class="bg-slate-200 hover:bg-slate-300 border-2 px-1"
                 >
                     <i class="fas fa-power-off"></i>
                 </button>
             </div>
-            <div class="h-1 w-full bg-slate-500"></div>
-
-            <div class="flex flex-row justify-center h-5/6">
-                <div class="bg-white border-2 w-1/4 mb-4 flex flex-col">
-                    <div class="text-lg text-center border-b-2 p-1 mb-2">Operations</div>
-                    <div class="flex flex-row border-b-2 border-b-slate-400">
-                        <button
-                            id="search-open"
-                            class="border-2 px-2 py-1 border-slate-200 hover:bg-slate-300"
-                        >
-                            Search
-                        </button>
-                        <button
-                            id="add-open"
-                            class="border-2 px-2 py-1 active-border-slate-300 hover:bg-slate-300"
-                        >
-                            Add
-                        </button>
-                    </div>
-                    <div
-                        id="search-modal"
-                        class="h-1/2 flex-col justify-center items-center px-5 border-2 hidden"
-                    >
-                        <form id="search-form"
-                        class="flex flex-col mb-4">
-                            <label for="fname" class="ml-3">First name:</label><br />
-                            <input
-                                type="text"
-                                id="search-fname"
-                                name="firstName"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                            /><br />
-                            <label for="lname" class="ml-3">Last name:</label><br />
-                            <input
-                                type="text"
-                                id="search-lname"
-                                name="lastName"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                            /><br />
-                            <button
-                                id="search-submit"
-                                class="button-4 focus:border-slate-800"
-                                role="button"
-                                type="submit"
-                            >
-                                Search
-                            </button>
-                        </form>
-                    </div>
-                    <div
-                        id="add-modal"
-                        class="h-1/2 hidden flex-col justify-center items-center px-5 border-2 py-4"
-                    >
-                        <form id="add-form" class="flex flex-col mb-4">
-                            <label for="fname" class="ml-3">First name:</label><br />
-                            <input
-                                type="text"
-                                id="add-fname"
-                                name="firstName"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                                required
-                            /><br />
-                            <label for="lname" class="ml-3">Last name:</label><br />
-                            <input
-                                type="text"
-                                id="add-lname"
-                                name="lastName"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                                required
-                            /><br />
-                            <label for="email" class="ml-3">Email:</label><br />
-                            <input
-                                type="email"
-                                id="add-email"
-                                name="email"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                                required
-                            /><br />
-                            <label for="phone" class="ml-3">Phone number:</label>
-                            <input
-                                type="text"
-                                id="add-phone"
-                                name="phoneNumber"
-                                class="w-full border-2 mb-2"
-                                autocomplete="off"
-                                required
-                            />
-                            <button
-                                id="add-submit"
-                                class="button-4"
-                                role="button"
-                                type="submit"
-                            >
-                                Add
-                            </button>
-                        </form>
-                    </div>
-                    <div id="post-result" class="h-full border-2"></div>
+            <div class="bg-white h-96 w-full">
+                <div
+                    id="contacts-header"
+                    class="text-center text-xl py-2 border-b-2 border-slate-200"
+                >
+                    Contacts
                 </div>
-                <div class="bg-white border-2 w-full mb-4 flex flex-col">
-                    <div class="text-center text-lg border-b-2 p-1 mb-2">Results</div>
-                    <!-- Contacts -->
-                    <div
-                        id="contacts-list"
-                        class="flex flex-col items-center overflow-scroll h-full"
-                    ></div>
-                </div>
+                <div
+                    id="contacts-list"
+                    class="flex flex-col h-5/6 items-center overflow-y-scroll px-4"
+                ></div>
             </div>
         </div>
-        <!-- Edit Contact -->
-        <div id="edit-modal" class="absolute bg-white w-80 p-4 z-10 border-2 hidden">
-            <button id="edit-close" class="absolute right-0 mr-6 text-lg hover:scale-110">x</button>
-            <form id="edit-form" class="flex flex-col">
-                <div class="w-full text-center text-lg mb-3 underline">Edit Contact</div>
-                <label for="fname" class="ml-3">First name:</label><br />
+        <!-- edit-modal -->
+        <div id="edit-container" class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl">
+            <div class="w-full text-center text-lg border-b-2 px-4">Edit Contact</div>
+            <!-- Edit form -->
+            <div class="py-4 border-b-2 flex flex-col items-center">
                 <input
-                    type="text"
                     id="edit-fname"
+                    type="text"
                     name="firstName"
-                    class="w-full border-2 mb-2"
-                    autocomplete="off"
-                    required
-                /><br />
-                <label for="lname" class="ml-3">Last name:</label><br />
-                <input
-                    type="text"
-                    id="edit-lname"
-                    name="lastName"
-                    class="w-full border-2 mb-2"
-                    autocomplete="off"
-                    required
-                /><br />
-                <label for="email" class="ml-3">Email:</label><br />
-                <input
-                    type="email"
-                    id="edit-email"
-                    name="email"
-                    class="w-full border-2 mb-2"
-                    autocomplete="off"
-                    required
-                /><br />
-                <label for="phone" class="ml-3">Phone number:</label>
-                <input
-                    type="text"
-                    id="edit-phone"
-                    name="phoneNumber"
-                    class="w-full border-2 mb-2"
-                    autocomplete="off"
-                    required
+                    placeholder="First name"
+                    class="input-1"
                 />
-                <button id="edit-submit" class="button-4" role="button" type="submit">
-                    Edit
-                </button>
-            </form>
-        </div>
-        <!-- Delete Contact -->
-        <div id="delete-modal" class="absolute bg-white w-80 p-4 z-12 border-2 h-60 hidden">
-            <button id="delete-close" class="text-lg hover:scale-110 float-right px-2">x</button>
-            <div
-                id="delete-prompt"
-                class="w-full mt-12 text-center italic text-slate-500 mb-4"
-            ></div>
-            <form id="delete-form" class="flex flex-col items-center">
-                <label class="mb-2">Confirm Password:</label>
                 <input
-                    type="password"
-                    id="delete-password"
-                    name="password"
-                    class="border-2 mb-2"
-                    autocomplete="current-password"
-                    required
+                    id="edit-lname"
+                    type="text"
+                    name="lastName"
+                    placeholder="Last name"
+                    class="input-1"
+                />
+                <input
+                    id="edit-email"
+                    type="text"
+                    name="email"
+                    placeholder="Email"
+                    class="input-1"
+                />
+                <input
+                    id="edit-phone"
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Phone Number"
+                    class="input-1"
                 />
                 <button
-                    id="delete-submit"
-                    class="border-2 rounded-md bg-slate-100 w-4/5 text-red-500 hover:bg-slate-200"
+                    id="edit-submit"
+                    type="button"
+                    class="button-1 rounded-lg bg-slate-200 hover:bg-slate-300"
                 >
-                    Yes, delete this contact.
+                    Submit
                 </button>
-            </form>
+            </div>
         </div>
     </body>
 </html>
