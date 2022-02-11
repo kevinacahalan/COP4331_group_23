@@ -11,8 +11,7 @@ header('Access-Control-Allow-Headers: *');
 	$searchCount = 0;
 
 	$userId = $inData["userId"];
-	$firstName = $inData["firstName"];
-	$lastName = $inData["lastName"];
+	$query = $inData["query"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ( $conn->connect_error ) 
@@ -21,35 +20,29 @@ header('Access-Control-Allow-Headers: *');
 	} 
 	else
 	{	
-
-		if( empty($firstName) )
+		$query = trim($query);
+		$query = explode(" ", $query);
+		if (count($query) > 1)
 		{
-			$stmt = $conn->prepare(
-				"SELECT * FROM Contacts WHERE
-				 UserId = ? AND
-				 LastName LIKE ?"
-			);
-			$stmt->bind_param("ss", $userId, $lastName);
-		}
-		else if( empty($lastName) )
-		{
-			$stmt = $conn->prepare(
-				"SELECT * FROM Contacts WHERE
-				 UserId = ? AND
-				 FirstName LIKE ?"
-			);
-			$stmt->bind_param("ss", $userId, $firstName);
+			$firstQuery = '%' . $query[0] . '%'; 
+			$secondQuery = '%' . $query[1] . '%';
 		}
 		else
 		{
-			$stmt = $conn->prepare(
-				"SELECT * FROM Contacts WHERE
-				 UserId = ? AND
-				 FirstName LIKE ? AND
-				 LastName LIKE ?"
-			);
-			$stmt->bind_param("sss", $userId, $firstName, $lastName);
+			$firstQuery = '%' . $query[0] . '%'; 
+			$secondQuery = '%' . $query[0] . '%';
 		}
+		$stmt = $conn->prepare("SELECT *
+								FROM `Contacts`
+								WHERE ((`FirstName` LIKE ? OR `LastName` LIKE ?) 
+								OR (`FirstName` LIKE ? OR `LastName` LIKE ?) 
+								OR `Phone` LIKE ? 
+								OR `Email` LIKE ?)
+								AND UID=?");
+		$stmt->bind_param("ssssssi", $firstQuery, $secondQuery, $secondQuery, $firstQuery, $firstQuery, $firstQuery, $inData["uid"]);
+		$stmt->execute();
+		$stmt->bind_param("ss", $userId, $query);
+		
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
