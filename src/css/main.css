@@ -11,6 +11,53 @@
     }
 }
 
+@keyframes movingBackground{
+    from { background-position: 0px 0px; } 
+	to { background-position: 1400px -1400px; }
+}
+
+@keyframes change2{
+    0%{
+        background-position: 0 50%;
+    }
+    25%{
+        background-position: -50% 50%;
+    }
+    50%{
+        background-position: 0 -50%;
+    }
+    75%{
+        background-position: -50% -50%;
+    }
+    100%{
+        background-position: 0 50%;
+    }
+}
+@-webkit-keyframes moveX {
+    from { background-position-x: 0; } to { background-position-x: 480px; }
+  }
+  @-moz-keyframes moveX {
+    from { background-position-x: 0; } to { background-position-x: 480px; }
+  }
+  @-o-keyframes moveX {
+    from { background-position-x: 0; } to { background-position-x: 480px; }
+  }
+  @keyframes moveX {
+    from { background-position-x: 0; } to { background-position-x: 480px; }
+  }
+  @-webkit-keyframes moveY {
+    from { background-position-y: 0; } to { background-position-y: 280px; }
+  }
+  @-moz-keyframes moveY {
+    from {background-position-y: 0; } to { background-position-y: 280px; }
+  }
+  @-o-keyframes moveY {
+    from { background-position-y: 0; } to { background-position-y: 280px; }
+  }
+  @keyframes moveY {
+    from { background-position-y: 0; } to {background-position-y: 280px; }
+  }
+
 
 body {
     --color-primary: #009579;
@@ -29,13 +76,28 @@ body {
     width: 100%;
     height: 100vh;
     color: rgb(0, 0, 0);
-    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
-    background-size: 400% 400%;
+   /* background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+    background-size: 400% 400%; */
+    background-image: url(../media/Website_Images/hammer_pat.svg);
+    
+    
     position: relative;
-    animation: change 10s ease-in-out infinite;
-
+    /*animation: change 5s ease-in-out infinite;
+    */
+    
+   /* animation: movingBackground 10s linear infinite;
+    */
+   /* animation: change2 5s linear infinite;
+   */
+   -webkit-animation: moveX 4.05s linear 0s infinite alternate, moveY 4.4s linear 0s infinite alternate;
+   -moz-animation: moveX 4.05s linear 0s infinite alternate, moveY 4.4s linear 0s infinite alternate;
+   -o-animation: moveX 4.05s linear 0s infinite alternate, moveY 4.4s linear 0s infinite alternate;
+   animation: moveX 4.05s linear 0s infinite alternate, moveY 4.4s linear 0s infinite alternate;
 
 }
+
+
+
 .container{
     width: 400px;
     max-width: 400px;
@@ -88,6 +150,9 @@ body {
  .form__input-group{
      margin-bottom: 1rem;
  }
+ .form_input-group span i{
+    color:seagreen;
+}
 
  .form__input{
      display: block;
@@ -156,3 +221,10 @@ body {
  .form__link:hover{
      text-decoration: underline;
  }
+
+ .form_input span{
+     position:absolute;
+     bottom: 12px;
+     right: 17px;
+ }
+ 
