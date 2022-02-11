@@ -157,6 +157,137 @@ function clearButtonResponseText() {
     document.getElementById("loginResult").innerHTML = "";
 }
 
+//Clear input error that gets triggered by submission
+function clearInputFields(){
+    const createAccountForm = document.querySelector("#createAccount");
+    createAccountForm.reset();
+    var fname = document.getElementById("firstName");
+    var lname = document.getElementById("lastName");
+    var uname = document.getElementById("signupUsername");
+    var pass = document.getElementById("signupPassword");
+    var cpname = document.getElementById("signupConfirmPassword");
+
+    clearInputError(fname);
+    clearInputError(lname);
+    clearInputError(uname);
+    clearInputError(pass);
+    clearInputError(cpname);
+    clearChecks();
+    setFormMessage(createAccountForm, "success", "");
+    //alert("Fields have been cleared!");
+}
+
+//Remove checks by removing the icon tags
+function clearChecks(){
+    var fnCheck = document.getElementById("fn_Check");
+    var lnCheck = document.getElementById("ln_Check");
+    var unCheck = document.getElementById("un_Check");
+    var passCheck = document.getElementById("pw_Check");
+    var cpCheck = document.getElementById("cp_Check");
+
+    fnCheck.innerHTML="";
+    fnCheck.style.color = '';
+    lnCheck.innerHTML="";
+    lnCheck.style.color = '';
+    unCheck.innerHTML="";
+    unCheck.style.color = '';
+    passCheck.innerHTML="";
+    passCheck.style.color = '';
+    cpCheck.innerHTML="";
+    cpCheck.style.color = '';
+    
+
+
+}
+
+//Checks validity of name and display visual check
+function validateName(){
+    var fname = document.getElementById("firstName").value;
+    var fnCheck = document.getElementById("fn_Check");
+    if(fname.length > 0)
+    {
+        fnCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        fnCheck.style.color = '#2e8b57';
+        //fnCheck.innerHTML="Valid input";
+    }
+   else
+    {
+        fnCheck.innerHTML="";
+        fnCheck.style.color = '';
+        //fnCheck.innerHTML="Valid input";
+    }
+}
+
+function validatelName(){
+    var lname = document.getElementById("lastName").value;
+    var lnCheck = document.getElementById("ln_Check");
+    if(lname.length > 0)
+    {
+        lnCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        lnCheck.style.color = '#2e8b57';
+        //fnCheck.innerHTML="Valid input";
+    }
+   else
+    {
+        lnCheck.innerHTML="";
+        lnCheck.style.color = '';
+        //fnCheck.innerHTML="Valid input";
+    }
+}
+
+function validateUsername(){
+    var uname = document.getElementById("signupUsername").value;
+    var unCheck = document.getElementById("un_Check");
+    if(uname.length > 10)
+    {
+        unCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        unCheck.style.color = '#2e8b57';
+        //fnCheck.innerHTML="Valid input";
+    }
+   else
+    {
+        unCheck.innerHTML="";
+        unCheck.style.color = '';
+        //fnCheck.innerHTML="Valid input";
+    }
+}
+
+function validatePassword(){
+    var pass = document.getElementById("signupPassword").value;
+    var passCheck = document.getElementById("pw_Check");
+    if(pass.length > 9)
+    {
+        passCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        passCheck.style.color = '#2e8b57';
+        //fnCheck.innerHTML="Valid input";
+    }
+   else
+    {
+        passCheck.innerHTML="";
+        passCheck.style.color = '';
+        //fnCheck.innerHTML="Valid input";
+    }
+}
+
+function validateconfirmPassword(){
+    var pass = document.getElementById("signupPassword").value;
+    var cpname = document.getElementById("signupConfirmPassword").value;
+    var cpCheck = document.getElementById("cp_Check");
+    if(pass == cpname)
+    {
+        cpCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        cpCheck.style.color = '#2e8b57';
+        //fnCheck.innerHTML="Valid input";
+    }
+   else
+    {
+        cpCheck.innerHTML="";
+        cpCheck.style.color = '';
+        //fnCheck.innerHTML="Valid input";
+    }
+}
+
+
 function checkFormComplete() {
     var fnameVal = document.getElementById("firstName").value.length;
     var lnameVal = document.getElementById("lastName").value.length;
@@ -173,15 +304,8 @@ function checkFormComplete() {
     }
 }
 
-function validate() {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    if (username == "Formget" && password == "formget#123") {
-        alert("Login successfully");
-        window.location = "../html/contacts.html"; // Redirecting to other page.
-        return false;
-    }
-}
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
@@ -192,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#linkCreateAccount").addEventListener("click", (e) => {
         e.preventDefault();
         loginForm.classList.add("form--hidden");
-        clearButtonResponseText();
+        //clearButtonResponseText();
         createAccountForm.classList.remove("form--hidden");
     });
 
@@ -200,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#linkLogin").addEventListener("click", (e) => {
         e.preventDefault();
         loginForm.classList.remove("form--hidden");
-        clearButtonResponseText();
+        //clearButtonResponseText();
         createAccountForm.classList.add("form--hidden");
     });
 
@@ -216,12 +340,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (checkFormComplete() == true) {
             setFormMessage(createAccountForm, "success", "Congrats all fields are filled out!");
             //Now Perform the doSignUp(), but check to see if password matches confirm Passowrd
+           // clearInputFields();
             doSignUp();
+            clearInputFields();
         }
 
         //If form isn't complete, don't allow for registration of new user
         else if (checkFormComplete() == false) {
-            setFormMessage(createAccountForm, "error", "At least one field is incomplete!");
+            setFormMessage(createAccountForm, "error", "* At least one field is incomplete!");
+            
         }
 
         //setFormMessage(createAccountForm, "success", "Congrats this test works!");
@@ -232,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         doLogin();
-        //validate();
+       
     });
 
     //Perform error handling of user input field information
@@ -243,15 +370,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.target.value.length > 0 &&
                 e.target.value.length < 10
             ) {
-                setInputError(inputElement, "Username must be at least 10 characters in length");
-            } else if (
+                setInputError(inputElement, "* Username must be at least 10 characters in length");
+            } else  if (
+                e.target.id === "firstName" &&
+                e.target.value.length > 0 && 
+                //!e.target.value.match(/^[A-Z]*$/)
+               ( /[A-Z]/.test( e.target.value.charAt(0))== false)
+            ) {
+                setInputError(inputElement, "* First name should be capitalized");
+            }  else  if (
+                e.target.id === "lastName" &&
+                e.target.value.length > 0 && 
+                //!e.target.value.match(/^[A-Z]*$/)
+               ( /[A-Z]/.test( e.target.value.charAt(0))== false)
+            ) {
+                setInputError(inputElement, "* Last name should be capitalized");
+            }else if (
                 e.target.id === "signupPassword" &&
                 e.target.value.length > 0 &&
                 e.target.value.length < 10
             ) {
-                setInputError(inputElement, "Password must be at least 10 characters in length");
+                setInputError(inputElement, "* Password must be at least 10 characters in length");
             } else if (e.target.id === "signupConfirmPassword" && Pass.value != e.target.value) {
-                setInputError(inputElement, "Confirm password doesn't match password");
+                setInputError(inputElement, "* Confirm password doesn't match password");
             }
         });
 
