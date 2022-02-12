@@ -156,10 +156,10 @@ function searchContacts() {
     opOutput.value = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = JSON.stringify({
+    const request = {
         search: document.getElementById("search").value,
         userId: getId(),
-    });
+    };
 
     console.log(JSON.stringify(request));
 
@@ -179,7 +179,7 @@ function addContact() {
     opOutput.value = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
-    const request = JSON.stringify({
+    const request = {
         userId: getId(),
         contact: {
             firstName: document.getElementById("add-fname").value,
@@ -187,7 +187,7 @@ function addContact() {
             email: document.getElementById("add-email").value,
             phoneNumber: document.getElementById("add-phone").value,
         },
-    });
+    };
 
     console.log(JSON.stringify(request));
 
@@ -261,7 +261,7 @@ async function handleRequest(url, request) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: request,
+        body: JSON.stringify(request),
     });
 
     return await response.json();

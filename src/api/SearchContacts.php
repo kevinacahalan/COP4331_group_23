@@ -38,8 +38,8 @@ header('Access-Control-Allow-Headers: *');
 								OR (`FirstName` LIKE ? OR `LastName` LIKE ?) 
 								OR `Phone` LIKE ? 
 								OR `Email` LIKE ?)
-								AND UID=?");
-		$stmt->bind_param("ssssssi", $firstQuery, $secondQuery, $secondQuery, $firstQuery, $firstQuery, $firstQuery, $inData["uid"]);
+								AND `UserID`=?");
+		$stmt->bind_param("ssssssi", $firstQuery, $secondQuery, $secondQuery, $firstQuery, $firstQuery, $firstQuery, $userId);
 		$stmt->execute();
 		$stmt->bind_param("ss", $userId, $query);
 		
@@ -84,7 +84,7 @@ header('Access-Control-Allow-Headers: *');
 	function sendResultInfoAsJson( $obj )
 	{
 		header('Content-type: application/json');
-		echo $obj;
+		echo json_encode($obj);
 	}
 	
 	function returnWithError( $err )
