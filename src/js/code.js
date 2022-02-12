@@ -29,7 +29,7 @@ document.addEventListener(
         });
 
         document.getElementById("edit-submit").addEventListener("click", function (e) {
-            updateContacts();
+            updateContact();
         });
 
         dragElement(document.getElementById("edit-container"));
@@ -158,7 +158,7 @@ function searchContacts() {
     console.log(JSON.stringify(request));
 
     handleRequest(url, request)
-        .then((data) => {
+        .then((response) => {
             let contactsList = document.getElementById("contacts-list");
 
             JSON.parse(response).results.forEach((el) =>
@@ -201,7 +201,7 @@ function addContact() {
 
 function updateContact() {
     const endpoint = "/Update";
-    const opOutput = document.getElementById("post-result");
+    const opOutput = document.getElementById("edit-post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
@@ -215,22 +215,26 @@ function updateContact() {
 
     console.log(JSON.stringify(request));
 
-    handleRequest(url, request).then((data) => {
-        if (data.error == "") {
-            opOutput.textContent = "Contact updated successfully.";
-            document.getElementById("edit-fname").value = "";
-            document.getElementById("edit-lname").value = "";
-            document.getElementById("edit-email").value = "";
-            document.getElementById("edit-phone").value = "";
-        } else {
-            opOutput.textContent = "Unable to update contact.";
-        }
-    });
+    handleRequest(url, request)
+        .then((response) => {
+            if (JSON.parse(response).error === "") {
+                opOutput.textContent = "Contact updated successfully.";
+                document.getElementById("edit-fname").value = "";
+                document.getElementById("edit-lname").value = "";
+                document.getElementById("edit-email").value = "";
+                document.getElementById("edit-phone").value = "";
+            } else {
+                opOutput.textContent = "Unable to update contact.";
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 }
 
 function deleteContact(id) {
     const endpoint = "/Delete";
-    const opOutput = document.getElementById("post-result");
+    const opOutput = document.getElementById("delete-post-result");
     opOutput.textContent = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
@@ -292,10 +296,10 @@ function buildContactElement(contact) {
     editButton.addEventListener("click", function () {
         const editModal = document.getElementById("edit-container");
         editModal.setAttribute("data-contactId", contact.contactId);
-        document.getElementsById("edit-fname").placeholder = contact.firstName;
-        document.getElementsById("edit-lname").placeholder = contact.lastName;
-        document.getElementsById("edit-email").placeholder = contact.email;
-        document.getElementsById("edit-phone").placeholder = contact.phoneNumber;
+        document.getElementById("edit-fname").placeholder = contact.firstName;
+        document.getElementById("edit-lname").placeholder = contact.lastName;
+        document.getElementById("edit-email").placeholder = contact.email;
+        document.getElementById("edit-phone").placeholder = contact.phoneNumber;
         editModal.classList.replace("hidden", "flex");
         document.getElementById("edit-fname").focus();
     });
