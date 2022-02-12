@@ -159,10 +159,11 @@ function searchContacts() {
 
     handleRequest(url, request)
         .then((data) => {
-            console.log(data);
             let contactsList = document.getElementById("contacts-list");
 
-            data["results"].forEach((el) => contactsList.append(buildContactElement(el)));
+            JSON.parse(response).results.forEach((el) =>
+                contactsList.append(buildContactElement(el))
+            );
             opOutput.textContent = "Contact(s) found!";
         })
         .catch((err) => {
@@ -276,7 +277,7 @@ function buildContactElement(contact) {
         "even:bg-slate-100"
     );
 
-    div.innerText = `${contact.firstName} ${contact.lastName} ${contact.email} ${contact.phoneNumber}`;
+    newContact.innerText = `${contact.firstName} ${contact.lastName} ${contact.email} ${contact.phoneNumber}`;
 
     // Create Edit button
     const editButton = document.createElement("button");
