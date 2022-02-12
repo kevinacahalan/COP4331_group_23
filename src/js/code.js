@@ -190,8 +190,12 @@ function addContact() {
 
     console.log(JSON.stringify(request));
 
-    handleRequest(url, request).then((data) => {
-        if (data.error == "") {
+    handleRequest(url, request).then((response) => {
+        if (JSON.parse(response).error === "") {
+            let contactsList = document.getElementById('contacts-list');
+            let contact = request.contact;
+            contact.append("contactId", )
+            contactsList.append(buildContactElement(request.contact))
             opOutput.value = "Contact added successfully.";
         } else {
             opOutput.value = "Unable to add contact.";

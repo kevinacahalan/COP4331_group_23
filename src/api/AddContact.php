@@ -38,7 +38,7 @@ header('Access-Control-Allow-Headers: *');
 	{	
 		try {
 			$stmt = $conn->prepare("INSERT into Contacts (FirstName,LastName,Email,PhoneNumber,UserID) VALUES(?,?,?,?,?)");
-			$stmt->bind_param("sssss", $firstName, $lastName, $email, $phoneNumber, $userId);
+			$stmt->bind_param("ssssi", $firstName, $lastName, $email, $phoneNumber, $userId);
 			$stmt->execute();
 
 			returnWithError(""); // Account made, no error
@@ -58,7 +58,7 @@ header('Access-Control-Allow-Headers: *');
 	function sendResultInfoAsJson( $obj )
 	{
 		header('Content-type: application/json');
-		echo $obj;
+		echo json_encode($obj);
 	}
 	
 	function returnWithError( $err )
