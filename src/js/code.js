@@ -190,17 +190,14 @@ function addContact() {
 
     console.log(JSON.stringify(request));
 
-    handleRequest(url, request).then((response) => {
-        if (JSON.parse(response).error === "") {
-            let contactsList = document.getElementById('contacts-list');
-            let contact = request.contact;
-            contact.append("contactId", )
-            contactsList.append(buildContactElement(request.contact))
+    handleRequest(url, request)
+        .then((response) => {
             opOutput.value = "Contact added successfully.";
-        } else {
+        })
+        .catch((err) => {
+            console.error(err);
             opOutput.value = "Unable to add contact.";
-        }
-    });
+        });
 }
 
 function updateContact() {
