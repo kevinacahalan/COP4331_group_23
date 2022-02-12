@@ -49,22 +49,6 @@ API endpoints are documented at [SwaggerHub](https://app.swaggerhub.com/apis/COP
 
 ---
 
-## Technical Analysis
-####  Design pattern for modal interaction:
-I(js) made the decision to "brand" opened edit and delete modals with data from the button responsible for opening them. I chose this approach because it seemed the simplest, though not the most orthogonal, implementation to complete.
-
-#### Detail
-When a contact is created, the contacts list entry is composed of 4 text-based divs and 2 button divs. Those buttons are unique to that table entry, having been created with the database-unique contactId referencing that particular entry in the database.
-
-On click, both the edit and delete buttons set the contactId data attribute of whichever modal is being opened to the referenced contactId in the button. In such a way, the contactId data attribute is 'passed' to the next component along the user interaction cycle.
-
-The current implementation simply overwrites the existing contactId data attribute value on subsequent clicks, rather than removing it completely from the modal's dataset.
-
-#### Considerations for future maintenance based on existing design pattern:
-Because the modals don't reset or remove the contactId from the last click, there may arise future bugs in that system. I can't think of any breaking cases as of Feb7 but the area seems nebulous enough to me to warrant catalog.
-
----
-
 ## Running instructions
 
 Visit [Collective Contacts](http://collectivecontacts.xyz) to log in.
