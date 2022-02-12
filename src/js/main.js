@@ -43,9 +43,48 @@ async function doLogin() {
     window.location.replace("html/contacts.html");
 }
 
+async function doLoginFromSignUp() {
+    const endpoint = "/Login";
+    const createAccountForm = document.querySelector("#createAccount");
+
+    var login = document.getElementById("signupUsername").value;
+
+    var password = document.getElementById("signupPassword").value;
+    var hash = md5(password);
+
+    let body = {
+        login,
+        password: hash,
+    };
+
+    // document.getElementById("loginResult").innerHTML = "";
+    setFormMessage(createAccountForm, "Success", "");
+
+    let url = `${urlBase}${endpoint}${extension}`;
+    let response = await requestHandler(url, body);
+
+    // If response error exists then do something?
+    // if (response.error) {
+
+    // }
+
+    userId = response.id;
+
+
+    firstName = response.firstName;
+    lastName = response.lastName;
+
+    saveCookie();
+
+    window.location.replace("html/contacts.html");
+}
+
+
+
 async function doSignUp() {
     userId = 0;
     const endpoint = "/Registration";
+    const createAccountForm = document.querySelector("#createAccount");
 
     var firstname = document.getElementById("firstName").value;
     var lastname = document.getElementById("lastName").value;
@@ -74,6 +113,7 @@ async function doSignUp() {
 
         // TODO: show error for site and stop from auto-redirect
         if (response.error) {
+            setFormMessage(createAccountForm, "error", "Username already in use, please try again");
             return;
         }
         console.log(response);
@@ -88,6 +128,9 @@ async function doSignUp() {
         lastName = response.lastName;
 
         saveCookie();
+        doLoginFromSignUp();
+        
+        //window.location.replace("html/contacts.html");
     } else {
         // make conf pass red
         document.getElementById("loginResult").innerHTML = "Passwords do not match";
@@ -342,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
             //Now Perform the doSignUp(), but check to see if password matches confirm Passowrd
            // clearInputFields();
             doSignUp();
-            clearInputFields();
+           // clearInputFields();
         }
 
         //If form isn't complete, don't allow for registration of new user
