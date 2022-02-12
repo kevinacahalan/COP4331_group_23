@@ -160,7 +160,7 @@ function searchContacts() {
     handleRequest(url, request)
         .then((response) => {
             let contactsList = document.getElementById("contacts-list");
-
+            contactsList.innerHTML = "";
             JSON.parse(response).results.forEach((el) =>
                 contactsList.append(buildContactElement(el))
             );
@@ -174,7 +174,7 @@ function searchContacts() {
 
 function addContact() {
     const endpoint = "/AddContact";
-    const opOutput = document.getElementById("add-post-result");
+    let opOutput = document.getElementById("add-post-result");
     opOutput.value = "";
 
     const url = `${urlBase}${endpoint}${extension}`;
