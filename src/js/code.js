@@ -89,12 +89,6 @@ function dragElement(elmnt) {
     }
 }
 
-function insertContacts(contacts) {
-    let contactsList = document.getElementById("contacts-list");
-
-    contacts.forEach((el) => contactsList.append(buildContactElement(el)));
-}
-
 function doLogout() {
     userId = 0;
     firstName = "";
@@ -165,15 +159,15 @@ function searchContacts() {
 
     handleRequest(url, request)
         .then((data) => {
-            if (data.error == "") {
-                insertContacts(data.results);
-                opOutput.textContent = "Contact(s) found!";
-            } else {
-                opOutput.textContent = "No contact(s) matching search parameters found!";
-            }
+            console.log(data);
+            let contactsList = document.getElementById("contacts-list");
+
+            data["results"].forEach((el) => contactsList.append(buildContactElement(el)));
+            opOutput.textContent = "Contact(s) found!";
         })
         .catch((err) => {
             console.error(err);
+            opOutput.textContent = "No contact(s) matching search parameters found!";
         });
 }
 
