@@ -1,14 +1,13 @@
 const urlBase = "https://collectivecontacts.xyz/api";
 const extension = ".php";
 
-let userId = 230;
-let firstName = "Justice";
-let lastName = "Smith";
+let userId = 0;
+let firstName = "";
+let lastName = "";
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-        saveCookie();
         readCookie();
 
         document.getElementById("search-submit").addEventListener("click", function (e) {
