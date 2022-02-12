@@ -14,7 +14,7 @@
         <div class="mr-10">
             <div
                 id="search-container"
-                class="w-96 bg-white two-corners px-4 py-2 mb-5 drop-shadow-xl draggable background"
+                class="w-96 bg-white two-corners px-4 py-2 mb-5 drop-shadow-xl background"
             >
                 <div
                     id="search-container-header"
@@ -37,7 +37,7 @@
             </div>
             <div
                 id="add-container"
-                class="w-96 bg-white two-corners px-4 py-2 drop-shadow-xl draggable background"
+                class="w-96 bg-white two-corners px-4 py-2 drop-shadow-xl background"
             >
                 <div
                     id="add-container-header"
@@ -89,7 +89,7 @@
         <!-- Table -->
         <div
             id="contacts-container"
-            class="flex flex-col items-end drop-shadow-xl mr-10 w-96 draggable background"
+            class="flex flex-col items-end drop-shadow-xl mr-10 w-96 background"
         >
             <div class="flex flex-row justify-content items-center bg-white px-4 pt-2 rounded-t-md">
                 <div id="username-display" class="mr-2"></div>
@@ -113,11 +113,12 @@
                     class="flex flex-col h-5/6 items-center overflow-y-scroll px-4"
                 ></div>
             </div>
+            <div id="delete-post-result"></div>
         </div>
         <!-- edit-modal -->
         <div
             id="edit-container"
-            class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners draggable background"
+            class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners background"
         >
             <div
                 id="edit-container-header"
@@ -163,6 +164,7 @@
                     Submit
                 </button>
             </div>
+            <div id="edit-post-result"></div>
         </div>
     </body>
 </html>

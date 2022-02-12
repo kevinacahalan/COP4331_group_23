@@ -296,10 +296,10 @@ function buildContactElement(contact) {
     editButton.addEventListener("click", function () {
         const editModal = document.getElementById("edit-container");
         editModal.setAttribute("data-contactId", contact.contactId);
-        document.getElementById("edit-fname").placeholder = contact.firstName;
-        document.getElementById("edit-lname").placeholder = contact.lastName;
-        document.getElementById("edit-email").placeholder = contact.email;
-        document.getElementById("edit-phone").placeholder = contact.phoneNumber;
+        document.getElementById("edit-fname").value = contact.firstName;
+        document.getElementById("edit-lname").value = contact.lastName;
+        document.getElementById("edit-email").value = contact.email;
+        document.getElementById("edit-phone").value = contact.phoneNumber;
         editModal.classList.replace("hidden", "flex");
         document.getElementById("edit-fname").focus();
     });
