@@ -19,7 +19,7 @@ header('Access-Control-Allow-Headers: *');
 			 WHERE ID=?"
 		);
 		$stmt->bind_param(
-			"sssss",
+			"ssssi",
 			$inData["firstName"],
 			$inData["lastName"],
 			$inData["email"],

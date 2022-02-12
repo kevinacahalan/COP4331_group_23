@@ -210,7 +210,7 @@ function updateContact() {
         lastName: document.getElementById("edit-lname").value,
         email: document.getElementById("edit-email").value,
         phoneNumber: document.getElementById("edit-phone").value,
-        contactId: document.getElementById("edit-container").dataset.contactId,
+        contactId: document.getElementById("edit-container").dataset.contactid,
     };
 
     console.log(JSON.stringify(request));
