@@ -36,13 +36,10 @@ header('Access-Control-Allow-Headers: *');
 								FROM `Contacts`
 								WHERE ((`FirstName` LIKE ? OR `LastName` LIKE ?) 
 								OR (`FirstName` LIKE ? OR `LastName` LIKE ?) 
-								OR `Phone` LIKE ? 
+								OR `PhoneNumber` LIKE ? 
 								OR `Email` LIKE ?)
 								AND `UserID`=?");
 		$stmt->bind_param("ssssssi", $firstQuery, $secondQuery, $secondQuery, $firstQuery, $firstQuery, $firstQuery, $userId);
-		$stmt->execute();
-		$stmt->bind_param("ss", $userId, $query);
-		
 		$stmt->execute();
 		
 		$result = $stmt->get_result();

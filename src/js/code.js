@@ -163,14 +163,18 @@ function searchContacts() {
 
     console.log(JSON.stringify(request));
 
-    handleRequest(url, request).then((data) => {
-        if (data.error == "") {
-            insertContacts(data.results);
-            opOutput.textContent = "Contact(s) found!";
-        } else {
-            opOutput.textContent = "No contact(s) matching search parameters found!";
-        }
-    });
+    handleRequest(url, request)
+        .then((data) => {
+            if (data.error == "") {
+                insertContacts(data.results);
+                opOutput.textContent = "Contact(s) found!";
+            } else {
+                opOutput.textContent = "No contact(s) matching search parameters found!";
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 }
 
 function addContact() {
@@ -258,9 +262,6 @@ function deleteContact(id) {
 async function handleRequest(url, request) {
     let response = await fetch(url, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(request),
     });
 
