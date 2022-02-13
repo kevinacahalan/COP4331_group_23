@@ -295,7 +295,7 @@ function buildContactElement(contact) {
     editIcon.classList.add("fas", "fa-user-edit");
     editButton.append(editIcon);
     // Button config
-    editButton.classList.add("flex", "items-center", "px-2");
+    editButton.classList.add("flex", "items-center", "px-2", "ml-12");
     editButton.setAttribute("data-contactId", contact.contactId);
     editButton.id = "edit-open";
     editButton.addEventListener("click", function () {
