@@ -271,6 +271,15 @@ async function handleRequest(url, request) {
     return await response.json();
 }
 
+function formatPhoneNumber(phoneNumberString) {
+    var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        return "(" + match[1] + ") " + match[2] + "-" + match[3];
+    }
+    return null;
+}
+
 // Builds the elements to display in the contacts output table
 function buildContactElement(contact) {
     let newContact = document.createElement("div");
@@ -286,7 +295,7 @@ function buildContactElement(contact) {
         "place-content-around"
     );
 
-    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${contact.email}<br />${contact.phoneNumber}`;
+    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${contact.email}<br />${formatPhoneNumber(contact.phoneNumber)}`;
 
     // Create Edit button
     const editButton = document.createElement("button");
@@ -304,7 +313,7 @@ function buildContactElement(contact) {
         document.getElementById("edit-fname").value = contact.firstName;
         document.getElementById("edit-lname").value = contact.lastName;
         document.getElementById("edit-email").value = contact.email;
-        document.getElementById("edit-phone").value = contact.phoneNumber;
+        document.getElementById("edit-phone").value = formatPhoneNumber(contact.phoneNumber);
         editModal.classList.remove("hidden");
         document.getElementById("edit-fname").focus();
     });
