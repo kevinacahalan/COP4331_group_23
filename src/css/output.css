@@ -546,8 +546,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 100%;
 }
 
-.w-2\/5 {
-  width: 40%;
+.w-64 {
+  width: 16rem;
 }
 
 .max-w-xs {
@@ -682,6 +682,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   box-sizing: border;
 }
 
+body {
+  background-image: url(../media/Website_Images/hammer_pat.svg);
+}
+
 .draggable {
   position: absolute;
 }
@@ -696,6 +700,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .input-1 {
   width: 100%;
+  text-align: center;
   border: 1px solid rgba(27, 31, 35, 0.15);
   margin-bottom: 4px;
   border-radius: 6px;
@@ -719,10 +724,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 .button-1 {
-  width: 25%;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   text-align: center;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .two-corners {

@@ -87,84 +87,90 @@
             </div>
         </div>
         <!-- Table -->
-        <div
-            id="contacts-container"
-            class="flex flex-col items-end drop-shadow-xl mr-10 w-2/5 background"
-        >
-            <div class="flex flex-row justify-content items-center bg-white px-4 pt-2 rounded-t-md">
-                <div id="username-display" class="mr-2"></div>
-                <button
-                    type="button"
-                    onclick="doLogout()"
-                    class="bg-slate-200 hover:bg-slate-300 border-2 px-1"
-                >
-                    <i class="fas fa-power-off"></i>
-                </button>
-            </div>
-            <div class="bg-white h-96 w-full two-corners pb-4">
+        <div class="mr-10">
+            <div
+                id="contacts-container"
+                class="flex flex-col items-end drop-shadow-xl w-96 background"
+            >
                 <div
-                    id="contacts-container-header"
-                    class="text-center text-xl py-2 border-b-2 border-slate-200 cursor-move"
+                    class="flex flex-row justify-content items-center bg-white px-4 pt-2 rounded-t-md"
                 >
-                    Contacts
+                    <div id="username-display" class="mr-2"></div>
+                    <button
+                        type="button"
+                        onclick="doLogout()"
+                        class="bg-slate-200 hover:bg-slate-300 border-2 px-1"
+                    >
+                        <i class="fas fa-power-off"></i>
+                    </button>
                 </div>
-                <div
-                    id="contacts-list"
-                    class="flex flex-col h-4/5 items-center overflow-y-scroll px-4"
-                ></div>
-                <div id="delete-post-result" class="w-full text-center"></div>
+                <div class="bg-white h-96 w-full two-corners pb-4">
+                    <div
+                        id="contacts-container-header"
+                        class="text-center text-xl py-2 border-b-2 border-slate-200 cursor-move"
+                    >
+                        Contacts
+                    </div>
+                    <div
+                        id="contacts-list"
+                        class="flex flex-col h-4/5 items-center overflow-y-scroll px-4"
+                    ></div>
+                    <div id="delete-post-result" class="w-full text-center"></div>
+                </div>
             </div>
         </div>
         <!-- edit-modal -->
-        <div
-            id="edit-container"
-            class="bg-white max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners background"
-        >
+        <div>
             <div
-                id="edit-container-header"
-                class="w-full text-center text-lg border-b-2 px-4 cursor-move"
+                id="edit-container"
+                class="bg-white w-64 max-w-xs rounded-lg px-4 py-2 drop-shadow-xl two-corners background hidden"
             >
-                Edit Contact
-            </div>
-            <!-- Edit form -->
-            <div class="py-4 border-b-2 flex flex-col items-center">
-                <input
-                    id="edit-fname"
-                    type="text"
-                    name="firstName"
-                    placeholder="First name"
-                    class="input-1"
-                />
-                <input
-                    id="edit-lname"
-                    type="text"
-                    name="lastName"
-                    placeholder="Last name"
-                    class="input-1"
-                />
-                <input
-                    id="edit-email"
-                    type="text"
-                    name="email"
-                    placeholder="Email"
-                    class="input-1"
-                />
-                <input
-                    id="edit-phone"
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    class="input-1"
-                />
-                <button
-                    id="edit-submit"
-                    type="button"
-                    class="button-1 rounded-lg bg-slate-200 hover:bg-slate-300"
+                <div
+                    id="edit-container-header"
+                    class="w-full text-center text-lg border-b-2 px-4 cursor-move"
                 >
-                    Submit
-                </button>
+                    Edit Contact
+                </div>
+                <!-- Edit form -->
+                <div class="py-4 border-b-2 flex flex-col items-center">
+                    <input
+                        id="edit-fname"
+                        type="text"
+                        name="firstName"
+                        placeholder="First name"
+                        class="input-1"
+                    />
+                    <input
+                        id="edit-lname"
+                        type="text"
+                        name="lastName"
+                        placeholder="Last name"
+                        class="input-1"
+                    />
+                    <input
+                        id="edit-email"
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        class="input-1"
+                    />
+                    <input
+                        id="edit-phone"
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone Number"
+                        class="input-1"
+                    />
+                    <button
+                        id="edit-submit"
+                        type="button"
+                        class="button-1 rounded-lg bg-slate-200 hover:bg-slate-300"
+                    >
+                        Submit
+                    </button>
+                </div>
+                <div id="edit-post-result" class="w-full text-center"></div>
             </div>
-            <div id="edit-post-result" class="w-full text-center"></div>
         </div>
     </body>
 </html>

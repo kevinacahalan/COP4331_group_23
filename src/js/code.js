@@ -1,13 +1,14 @@
 const urlBase = "https://collectivecontacts.xyz/api";
 const extension = ".php";
 
-let userId = 0;
-let firstName = "";
-let lastName = "";
+let userId = 1;
+let firstName = "a";
+let lastName = "b";
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+        saveCookie();
         readCookie();
 
         document.getElementById("search-submit").addEventListener("click", function (e) {
@@ -29,6 +30,7 @@ document.addEventListener(
 
         document.getElementById("edit-submit").addEventListener("click", function (e) {
             updateContact();
+            document.getElementById("edit-container").classList.replace("flex", "hidden");
         });
 
         dragElement(document.getElementById("edit-container"));
