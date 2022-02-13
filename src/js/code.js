@@ -288,20 +288,24 @@ function buildContactElement(contact) {
 
     let leftDiv = document.createElement("div");
     leftDiv.classList.add("w-2/3");
-    let p = document.createElement("p");
-    p.classList.add("w-full, text-center");
 
-    p.textContent = `${contact.firstName} ${contact.lastName}`;
-    leftDiv.appendChild(p);
+    let name = document.createElement("p");
+    name.classList.add("w-full", "text-center");
+    name.textContent = `${contact.firstName} ${contact.lastName}`;
+    leftDiv.appendChild(name);
 
-    p.textContent = `${contact.email}`;
-    leftDiv.appendChild(p);
+    let email = document.createElement("p");
+    email.classList.add("w-full", "text-center");
+    email.textContent = `${contact.email}`;
+    leftDiv.appendChild(email);
 
-    p.textContent = `${formatPhoneNumber(contact.phoneNumber)}`;
-    leftDiv.appendChild(p);
+    let phone = document.createElement("p");
+    phone.classList.add("w-full", "text-center");
+    phone.textContent = `${formatPhoneNumber(contact.phoneNumber)}`;
+    leftDiv.appendChild(phone);
 
     let rightDiv = document.createElement("div");
-    rightDiv.classList("w-1/3", "flex", "items-center", "justify-end", "pr-10");
+    rightDiv.classList.add("w-1/3", "flex", "items-center", "justify-end", "pr-10");
     // Create Edit button
     const editButton = document.createElement("button");
     // Make and add icon
