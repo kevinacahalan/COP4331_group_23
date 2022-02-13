@@ -295,7 +295,9 @@ function buildContactElement(contact) {
         "place-content-around"
     );
 
-    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${contact.email}<br />${formatPhoneNumber(contact.phoneNumber)}`;
+    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${
+        contact.email
+    }<br />${formatPhoneNumber(contact.phoneNumber)}`;
 
     // Create Edit button
     const editButton = document.createElement("button");
@@ -313,7 +315,7 @@ function buildContactElement(contact) {
         document.getElementById("edit-fname").value = contact.firstName;
         document.getElementById("edit-lname").value = contact.lastName;
         document.getElementById("edit-email").value = contact.email;
-        document.getElementById("edit-phone").value = formatPhoneNumber(contact.phoneNumber);
+        document.getElementById("edit-phone").value = contact.phoneNumber;
         editModal.classList.remove("hidden");
         document.getElementById("edit-fname").focus();
     });
