@@ -160,16 +160,17 @@ function searchContacts() {
 
     handleRequest(url, request)
         .then((response) => {
-            let contactsList = document.getElementById("contacts-list");
-            contactsList.innerHTML = "";
-            JSON.parse(response).results.forEach((el) =>
-                contactsList.append(buildContactElement(el))
-            );
-            opOutput.textContent = "Contact(s) found!";
+            if (response.error === "") {
+                let contactsList = document.getElementById("contacts-list");
+                contactsList.innerHTML = "";
+                response.results.forEach((el) => contactsList.append(buildContactElement(el)));
+                opOutput.textContent = "Contact(s) found!";
+            } else {
+                opOutput.textContent = "No contact(s) matching search parameters found!";
+            }
         })
         .catch((err) => {
             console.error(err);
-            opOutput.textContent = "No contact(s) matching search parameters found!";
         });
 }
 
@@ -193,11 +194,14 @@ function addContact() {
 
     handleRequest(url, request)
         .then((response) => {
-            opOutput.value = "Contact added successfully.";
+            if (response.error === "") {
+                opOutput.value = "Contact added successfully.";
+            } else {
+                opOutput.value = "Unable to add contact.";
+            }
         })
         .catch((err) => {
             console.error(err);
-            opOutput.value = "Unable to add contact.";
         });
 }
 
@@ -219,12 +223,16 @@ function updateContact() {
 
     handleRequest(url, request)
         .then((response) => {
-            if (JSON.parse(response).error === "") {
-                opOutput.textContent = "Contact updated successfully.";
+            if (response.error === "") {
+                // Update display record
+                document.getElementById(
+                    `${request.contactId}`
+                ).innerText = `${request.firstName} ${request.lastName} ${request.email} ${request.phoneNumber}`;
                 document.getElementById("edit-fname").value = "";
                 document.getElementById("edit-lname").value = "";
                 document.getElementById("edit-email").value = "";
                 document.getElementById("edit-phone").value = "";
+                opOutput.textContent = "Contact updated successfully.";
             } else {
                 opOutput.textContent = "Unable to update contact.";
             }
@@ -246,8 +254,8 @@ function deleteContact(id) {
 
     console.log(JSON.stringify(request));
 
-    handleRequest(url, request).then((data) => {
-        if (data.error == "") {
+    handleRequest(url, request).then((response) => {
+        if (response.error === "") {
             opOutput.textContent = "Contact deleted successfully.";
             if (
                 document.getElementById("contacts-list").contains(document.getElementById(`${id}`))
