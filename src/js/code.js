@@ -295,10 +295,22 @@ function buildContactElement(contact) {
         "place-content-around"
     );
 
-    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${
-        contact.email
-    }<br />${formatPhoneNumber(contact.phoneNumber)}`;
+    let leftDiv = document.createElement("div");
+    leftDiv.classList.add("w-2/3");
+    let p = document.createElement("p");
+    p.classList.add("w-full, text-center");
 
+    p.textContent = `${contact.firstName} ${contact.lastName}`;
+    leftDiv.appendChild(p);
+
+    p.textContent = `${contact.email}`;
+    leftDiv.appendChild(p);
+
+    p.textContent = `${formatPhoneNumber(contact.phoneNumber)}`;
+    leftDiv.appendChild(p);
+
+    let rightDiv = document.createElement("div");
+    rightDiv.classList("w-1/3", "flex", "items-center", "justify-end", "pr-10");
     // Create Edit button
     const editButton = document.createElement("button");
     // Make and add icon
@@ -306,7 +318,7 @@ function buildContactElement(contact) {
     editIcon.classList.add("fas", "fa-user-edit");
     editButton.append(editIcon);
     // Button config
-    editButton.classList.add("flex", "items-center", "px-2", "ml-12");
+    editButton.classList.add("flex", "items-center", "px-2");
     editButton.setAttribute("data-contactId", contact.contactId);
     editButton.id = "edit-open";
     editButton.addEventListener("click", function () {
