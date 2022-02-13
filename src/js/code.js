@@ -29,7 +29,7 @@ document.addEventListener(
 
         document.getElementById("edit-submit").addEventListener("click", function (e) {
             updateContact();
-            document.getElementById("edit-container").classList.replace("flex", "hidden");
+            document.getElementById("edit-container").classList.add("hidden");
         });
 
         dragElement(document.getElementById("edit-container"));
@@ -225,7 +225,7 @@ function updateContact() {
             if (response.error === "") {
                 // Update display record
                 document.getElementById(`${request.contactId}`).remove();
-                document.getElementById("contacts-list").append(buildContact(request));
+                document.getElementById("contacts-list").append(buildContactElement(request));
                 document.getElementById("edit-fname").value = "";
                 document.getElementById("edit-lname").value = "";
                 document.getElementById("edit-email").value = "";
@@ -305,7 +305,7 @@ function buildContactElement(contact) {
         document.getElementById("edit-lname").value = contact.lastName;
         document.getElementById("edit-email").value = contact.email;
         document.getElementById("edit-phone").value = contact.phoneNumber;
-        editModal.classList.replace("hidden", "flex");
+        editModal.classList.remove("hidden");
         document.getElementById("edit-fname").focus();
     });
 
