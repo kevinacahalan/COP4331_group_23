@@ -51,13 +51,15 @@ header('Access-Control-Allow-Headers: *');
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '{
-				"contactId":' . $row["ID"] . ',
-				"firstName":"' . $row["FirstName"] . '",
-				"lastName":"' . $row["LastName"] . '",
-				"email":"' . $row["Email"] . '",
-				"phoneNumber":"' . $row["PhoneNumber"] . '"
-			}';
+
+			// 
+			$searchResults .= '{'.
+				'"contactId": "'.$row["ID"].'", '.
+				'"firstName": "'.$row["FirstName"].'", '.
+				'"lastName": "'.$row["LastName"].'", '.
+				'"email": "'.$row["Email"].'", '.
+				'"phoneNumber": "'.$row["PhoneNumber"].''.
+			'"}';
 		}
 		
 		if( $searchCount == 0 )
@@ -81,7 +83,7 @@ header('Access-Control-Allow-Headers: *');
 	function sendResultInfoAsJson( $obj )
 	{
 		header('Content-type: application/json');
-		echo json_encode($obj);
+		echo $obj;
 	}
 	
 	function returnWithError( $err )
@@ -97,10 +99,7 @@ header('Access-Control-Allow-Headers: *');
 	
 	function returnWithInfo( $searchResults )
 	{
-		$retValue = '{
-			"results":[' . $searchResults . '],
-			"error":""
-		}';
+		$retValue = '{"results": [' . $searchResults . '], "error": ""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
