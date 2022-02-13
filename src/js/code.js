@@ -159,6 +159,8 @@ function searchContacts() {
 
     handleRequest(url, request)
         .then((response) => {
+            console.log(response);
+            console.log(response.data);
             if (response.error === "") {
                 let contactsList = document.getElementById("contacts-list");
                 contactsList.innerHTML = "";
@@ -287,7 +289,8 @@ function buildContactElement(contact) {
         "flex-row",
         "justify-center",
         "items-center",
-        "even:bg-slate-100"
+        "even:bg-slate-100",
+        "place-content-around"
     );
 
     newContact.innerText = `${contact.firstName} ${contact.lastName} ${contact.email} ${contact.phoneNumber}`;

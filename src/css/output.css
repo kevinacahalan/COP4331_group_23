@@ -566,6 +566,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   flex-direction: column;
 }
 
+.place-content-around {
+  place-content: space-around;
+}
+
 .items-end {
   align-items: flex-end;
 }
