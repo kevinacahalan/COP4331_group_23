@@ -284,16 +284,7 @@ function formatPhoneNumber(phoneNumberString) {
 function buildContactElement(contact) {
     let newContact = document.createElement("div");
     newContact.id = `${contact.contactId}`;
-    newContact.classList.add(
-        "text-center",
-        "w-full",
-        "flex",
-        "flex-row",
-        "justify-center",
-        "items-center",
-        "even:bg-slate-100",
-        "place-content-around"
-    );
+    newContact.classList.add("w-full", "flex", "flex-row", "items-center", "even:bg-slate-100");
 
     let leftDiv = document.createElement("div");
     leftDiv.classList.add("w-2/3");
@@ -316,7 +307,7 @@ function buildContactElement(contact) {
     // Make and add icon
     let editIcon = document.createElement("i");
     editIcon.classList.add("fas", "fa-user-edit");
-    editButton.append(editIcon);
+    editButton.appendChild(editIcon);
     // Button config
     editButton.classList.add("flex", "items-center", "px-2");
     editButton.setAttribute("data-contactId", contact.contactId);
@@ -345,7 +336,8 @@ function buildContactElement(contact) {
     });
 
     // Add both buttons to contact object
-    newContact.append(editButton, deleteButton);
+    rightDiv.append(editButton, deleteButton);
+    newContact.append(leftDiv, rightDiv);
 
     return newContact;
 }
