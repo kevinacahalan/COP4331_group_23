@@ -140,7 +140,7 @@ function readCookie() {
     } else {
         document.getElementById(
             "username-display"
-        ).innerHTML = `Logged in as ${firstName} ${lastName}`;
+        ).innerText = `Logged in as ${firstName} ${lastName}`;
     }
 }
 
@@ -151,7 +151,7 @@ function searchContacts() {
 
     const url = `${urlBase}${endpoint}${extension}`;
     const request = {
-        search: document.getElementById("search").value,
+        query: document.getElementById("search").value,
         userId: getId(),
     };
 
@@ -159,8 +159,6 @@ function searchContacts() {
 
     handleRequest(url, request)
         .then((response) => {
-            console.log(response);
-            console.log(response.data);
             if (response.error === "") {
                 let contactsList = document.getElementById("contacts-list");
                 contactsList.innerHTML = "";
@@ -196,9 +194,9 @@ function addContact() {
     handleRequest(url, request)
         .then((response) => {
             if (response.error === "") {
-                opOutput.value = "Contact added successfully.";
+                opOutput.textContent = "Contact added successfully.";
             } else {
-                opOutput.value = "Unable to add contact.";
+                opOutput.textContent = "Unable to add contact.";
             }
         })
         .catch((err) => {
@@ -226,9 +224,8 @@ function updateContact() {
         .then((response) => {
             if (response.error === "") {
                 // Update display record
-                document.getElementById(
-                    `${request.contactId}`
-                ).innerText = `${request.firstName} ${request.lastName} ${request.email} ${request.phoneNumber}`;
+                document.getElementById(`${request.contactId}`).remove();
+                document.getElementById("contacts-list").append(buildContact(request));
                 document.getElementById("edit-fname").value = "";
                 document.getElementById("edit-lname").value = "";
                 document.getElementById("edit-email").value = "";
@@ -258,11 +255,7 @@ function deleteContact(id) {
     handleRequest(url, request).then((response) => {
         if (response.error === "") {
             opOutput.textContent = "Contact deleted successfully.";
-            if (
-                document.getElementById("contacts-list").contains(document.getElementById(`${id}`))
-            ) {
-                document.getElementById(`${id}`).remove();
-            }
+            document.getElementById(`${id}`).remove();
         } else {
             opOutput.textContent = "Unable to delete contact.";
         }
