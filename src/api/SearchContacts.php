@@ -26,20 +26,16 @@ header('Access-Control-Allow-Headers: *');
 		{
 			$firstQuery = '%' . $query[0] . '%'; 
 			$secondQuery = '%' . $query[1] . '%';
+			$stmt = $conn->prepare("SELECT * FROM Contacts WHERE (`FirstName` LIKE ? AND `LastName` LIKE ?) AND `UserID` = ?");
+			$stmt->bind_param("ssi", $firstQuery, $secondQuery, $userId);
 		}
 		else
 		{
-			$firstQuery = '%' . $query[0] . '%'; 
-			$secondQuery = '%' . $query[0] . '%';
+			$query = '%' . $query[0] . '%';
+			$stmt = $conn->prepare("SELECT * FROM Contacts WHERE (`FirstName` LIKE ? OR `LastName` LIKE ? OR `Email` LIKE ? OR `PhoneNumber` LIKE ?) AND `UserID` = ?");
+			$stmt->bind_param("ssssi", $query, $query, $query, $query, $userId);
+
 		}
-		$stmt = $conn->prepare("SELECT *
-								FROM `Contacts`
-								WHERE ((`FirstName` LIKE ? OR `LastName` LIKE ?) 
-								OR (`FirstName` LIKE ? OR `LastName` LIKE ?) 
-								OR `PhoneNumber` LIKE ? 
-								OR `Email` LIKE ?)
-								AND `UserID`=?");
-		$stmt->bind_param("ssssssi", $firstQuery, $secondQuery, $secondQuery, $firstQuery, $firstQuery, $firstQuery, $userId);
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
