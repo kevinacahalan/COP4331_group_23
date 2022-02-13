@@ -287,7 +287,7 @@ function buildContactElement(contact) {
     newContact.classList.add("w-full", "flex", "flex-row", "items-center", "even:bg-slate-100");
 
     let leftDiv = document.createElement("div");
-    leftDiv.classList.add("w-2/3");
+    leftDiv.classList.add("w-full");
 
     let name = document.createElement("p");
     name.classList.add("w-full", "text-center");
@@ -305,7 +305,7 @@ function buildContactElement(contact) {
     leftDiv.appendChild(phone);
 
     let rightDiv = document.createElement("div");
-    rightDiv.classList.add("w-1/3", "flex", "items-center", "justify-end", "pr-10");
+    rightDiv.classList.add("w-full", "flex", "items-center", "justify-center");
     // Create Edit button
     const editButton = document.createElement("button");
     // Make and add icon
