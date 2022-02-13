@@ -286,7 +286,7 @@ function buildContactElement(contact) {
         "place-content-around"
     );
 
-    newContact.innerHTML = `${contact.firstName}<br />${contact.lastName}<br />${contact.email}<br />${contact.phoneNumber}`;
+    newContact.innerHTML = `${contact.firstName} ${contact.lastName}<br />${contact.email}<br />${contact.phoneNumber}`;
 
     // Create Edit button
     const editButton = document.createElement("button");
