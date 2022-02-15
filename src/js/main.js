@@ -1,5 +1,7 @@
 const urlBase = "https://collectivecontacts.xyz/api";
 const extension = ".php";
+let timeout = null;
+let temp = null;
 
 async function doLogin() {
     const endpoint = "/Login";
@@ -79,6 +81,51 @@ async function doLoginFromSignUp() {
     window.location.replace("html/contacts.html");
 }
 
+async function checkUsernameFree() {
+    const endpoint = "/CheckAvailableUsername";
+    const createAccountForm = document.querySelector("#createAccount");
+
+    let login = document.getElementById("signupUsername").value;
+
+    let body = {
+        login,
+    };
+
+    let url = `${urlBase}${endpoint}${extension}`;
+
+    temp = await requestHandler(url, body);
+
+    console.log(temp)
+
+    return !(temp === null || temp.error === "")
+}
+
+async function doDelayedSearch(callback) {
+  if (timeout) { 
+    console.log("Clearing timeout") 
+    clearTimeout(timeout);
+  }
+
+  console.log("Setting timeout: function should run soon")
+  timeout = setTimeout(await callback(), 500);
+}
+
+document.getElementById("signupUsername").addEventListener("keydown", (e) => {
+    // await checkUsernameFree();
+    if (temp) clearTimeout(temp);
+})
+
+document.getElementById("signupUsername").addEventListener("keyup", async (e) => {
+   // e.preventDefault()
+    console.log("Keyup: running check")
+    doDelayedSearch(async () => { 
+        let value = await checkUsernameFree();
+
+        console.log("Validating username")
+        validateUsername(value);
+    })
+})
+
 
 
 async function doSignUp() {
@@ -94,7 +141,7 @@ async function doSignUp() {
     var hash = md5(password);
 
     var confirmPass = document.getElementById("signupConfirmPassword").value;
-
+    var unCheck = document.getElementById("un_Check");
     //let formData = formData(document.querySelector("#createAccount"));
 
     if (password == confirmPass) {
@@ -114,6 +161,8 @@ async function doSignUp() {
         // TODO: show error for site and stop from auto-redirect
         if (response.error) {
             setFormMessage(createAccountForm, "error", "Username already in use, please try again");
+            unCheck.innerHTML= '<i class="fa fa-window-close"></i>'
+            unCheck.style.color = '#ff0000';
             return;
         }
         console.log(response);
@@ -220,6 +269,25 @@ function clearInputFields(){
     //alert("Fields have been cleared!");
 }
 
+function clearInputFields(){
+    const createAccountForm = document.querySelector("#createAccount");
+    createAccountForm.reset();
+    var fname = document.getElementById("firstName");
+    var lname = document.getElementById("lastName");
+    var uname = document.getElementById("signupUsername");
+    var pass = document.getElementById("signupPassword");
+    var cpname = document.getElementById("signupConfirmPassword");
+
+    clearInputError(fname);
+    clearInputError(lname);
+    clearInputError(uname);
+    clearInputError(pass);
+    clearInputError(cpname);
+    clearChecks();
+    setFormMessage(createAccountForm, "success", "");
+    //alert("Fields have been cleared!");
+}
+
 //Remove checks by removing the icon tags
 function clearChecks(){
     var fnCheck = document.getElementById("fn_Check");
@@ -243,6 +311,55 @@ function clearChecks(){
 
 }
 
+function clearfnChecks(){
+    var fnCheck = document.getElementById("fn_Check");
+    
+
+    fnCheck.innerHTML="";
+    fnCheck.style.color = '';
+
+}
+
+function clearlnChecks(){
+    
+    var lnCheck = document.getElementById("ln_Check");
+   
+    lnCheck.innerHTML="";
+    lnCheck.style.color = '';
+
+
+}
+
+function clearunChecks(){
+   
+    var unCheck = document.getElementById("un_Check");
+    
+
+   
+    unCheck.innerHTML="";
+    unCheck.style.color = '';
+}
+
+function clearpassChecks(){
+   
+    var passCheck = document.getElementById("pw_Check");
+    
+
+   
+    passCheck.innerHTML="";
+    passCheck.style.color = '';
+}
+
+function clearcpChecks(){
+    
+    var cpCheck = document.getElementById("cp_Check");
+
+    cpCheck.innerHTML="";
+    cpCheck.style.color = '';
+    
+
+}
+
 //Checks validity of name and display visual check
 function validateName(){
     var fname = document.getElementById("firstName").value;
@@ -250,6 +367,7 @@ function validateName(){
     if(fname.length > 0)
     {
         fnCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        //fnCheck.innerHTML= '<i class="fa fa-window-close"></i>';
         fnCheck.style.color = '#2e8b57';
         //fnCheck.innerHTML="Valid input";
     }
@@ -267,32 +385,39 @@ function validatelName(){
     if(lname.length > 0)
     {
         lnCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
+        //lnCheck.innerHTML= '<i class="fa fa-window-close"></i>';
         lnCheck.style.color = '#2e8b57';
         //fnCheck.innerHTML="Valid input";
     }
    else
     {
-        lnCheck.innerHTML="";
+        lnCheck.innerHTML= '';
         lnCheck.style.color = '';
-        //fnCheck.innerHTML="Valid input";
+       
     }
 }
 
-function validateUsername(){
+function validateUsername(value) {
     var uname = document.getElementById("signupUsername").value;
     var unCheck = document.getElementById("un_Check");
-    if(uname.length > 10)
+
+    console.log(value)
+
+    if(!value)
     {
         unCheck.innerHTML='<i class ="fas fa-check-circle"></i>';
         unCheck.style.color = '#2e8b57';
         //fnCheck.innerHTML="Valid input";
     }
-   else
+   else 
     {
-        unCheck.innerHTML="";
-        unCheck.style.color = '';
+        console.log("Bad temp: Show error")
+        console.log(temp, value)
+        unCheck.innerHTML= '<i class="fa fa-window-close"></i>'
+        unCheck.style.color = '#ff0000';
         //fnCheck.innerHTML="Valid input";
     }
+    
 }
 
 function validatePassword(){
@@ -306,7 +431,7 @@ function validatePassword(){
     }
    else
     {
-        passCheck.innerHTML="";
+        passCheck.innerHTML= '';
         passCheck.style.color = '';
         //fnCheck.innerHTML="Valid input";
     }
@@ -324,7 +449,7 @@ function validateconfirmPassword(){
     }
    else
     {
-        cpCheck.innerHTML="";
+        cpCheck.innerHTML= '';
         cpCheck.style.color = '';
         //fnCheck.innerHTML="Valid input";
     }
@@ -347,9 +472,6 @@ function checkFormComplete() {
     }
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
@@ -366,6 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //Login Link Trigger
     document.querySelector("#linkLogin").addEventListener("click", (e) => {
         e.preventDefault();
+        clearInputFields();
         loginForm.classList.remove("form--hidden");
         //clearButtonResponseText();
         createAccountForm.classList.add("form--hidden");
@@ -374,6 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //Controls Create Account Form Button Behavior
     createAccountForm.addEventListener("submit", (e) => {
         e.preventDefault();
+      //  checkUsernameFree();
         //doSignUp();
         //alert ("Register successfully");
         // loginForm.classList.remove("form--hidden");
@@ -393,7 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setFormMessage(createAccountForm, "error", "* At least one field is incomplete!");
             
         }
-
+        
         //setFormMessage(createAccountForm, "success", "Congrats this test works!");
     });
 
@@ -411,8 +535,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 e.target.id === "signupUsername" &&
                 e.target.value.length > 0 &&
-                e.target.value.length < 10
+                e.target.value.length < 10 
             ) {
+                clearunChecks();
                 setInputError(inputElement, "* Username must be at least 10 characters in length");
             } else  if (
                 e.target.id === "firstName" &&
@@ -420,6 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 //!e.target.value.match(/^[A-Z]*$/)
                ( /[A-Z]/.test( e.target.value.charAt(0))== false)
             ) {
+                clearfnChecks();
                 setInputError(inputElement, "* First name should be capitalized");
             }  else  if (
                 e.target.id === "lastName" &&
@@ -427,12 +553,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 //!e.target.value.match(/^[A-Z]*$/)
                ( /[A-Z]/.test( e.target.value.charAt(0))== false)
             ) {
+                clearlnChecks();
                 setInputError(inputElement, "* Last name should be capitalized");
             }else if (
                 e.target.id === "signupPassword" &&
                 e.target.value.length > 0 &&
                 e.target.value.length < 10
             ) {
+                clearpassChecks();
                 setInputError(inputElement, "* Password must be at least 10 characters in length");
             } else if (e.target.id === "signupConfirmPassword" && Pass.value != e.target.value) {
                 setInputError(inputElement, "* Confirm password doesn't match password");
